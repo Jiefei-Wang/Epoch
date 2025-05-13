@@ -4,18 +4,33 @@
 \alias{Epoch}
 \title{Constructor for Epoch class}
 \usage{
-Epoch(data, electrodes = NULL, timeRanges = NULL, times = NULL)
+Epoch(
+  table,
+  electrodes = NULL,
+  times = NULL,
+  startTime = NULL,
+  samplingRate = NULL,
+  rowData = NULL,
+  colData = NULL,
+  metaData = NULL
+)
 }
 \arguments{
-\item{data}{Matrix containing epoch data (rows=electrodes, columns=time points)}
+\item{table}{Matrix containing epoch data (rows=electrodes, columns=time points)}
 
-\item{electrodes}{Optional character vector for electrode names, if not provided, column names of data are used. If both are NULL, electrodes are named E1, E2, ...}
+\item{electrodes}{Optional character vector for electrode names, if not provided, row names of data are used.}
 
-\item{timeRanges}{Optional numeric vector of 2 containing start
-and end time points. Only one of times or timeRanges can be non-null}
+\item{times}{Optional numeric vector of time points.}
 
-\item{times}{Optional numeric vector of time points. Only one of times or
-timeRanges can be non-null}
+\item{startTime}{Optional numeric value for start time, if provided, times will be calculated based on this and samplingRate.}
+
+\item{samplingRate}{Optional numeric value for sampling rate, if provided, times will be calculated based on this and startTime.}
+
+\item{rowData}{Optional data frame containing metadata for rows (electrodes).}
+
+\item{colData}{Optional data frame containing metadata for columns (time points).}
+
+\item{metaData}{Optional list containing metadata for the Epoch object.}
 }
 \value{
 An Epoch object

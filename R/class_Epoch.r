@@ -1,139 +1,150 @@
 setClassUnion("matrixOrNULL", c("matrix", "NULL"))
 setClassUnion("arrayOrNULL", c("array", "NULL"))
 setClassUnion("numericOrNULL", c("numeric", "NULL"))
+setClassUnion("data.frameOrNULL", c("data.frame", "NULL"))
 
 #' @title Epoch Class
 #' @description S4 class to handle epoch data with electrodes and time points
 #' @slot data a tibble containing epoch data (columns=time points, rows=electrodes)
 #' @slot times Numeric vector containing time range
 .Epoch <- setClass("Epoch",
-    slots = list(
-        data = "matrix",
-        times = "numericOrNULL"
-    )
+    slots = list(),
+    contains = "TableContainer",
 )
 
 
 
 #' Constructor for Epoch class
-#' @param data Matrix containing epoch data (rows=electrodes, columns=time points)
-#' @param electrodes Optional character vector for electrode names, if not provided, column names of data are used. If both are NULL, electrodes are named E1, E2, ...
-#' @param timeRanges Optional numeric vector of 2 containing start 
-#' and end time points. Only one of times or timeRanges can be non-null
-#' @param times Optional numeric vector of time points. Only one of times or
-#' timeRanges can be non-null
+#' @param table Matrix containing epoch data (rows=electrodes, columns=time points)
+#' @param electrodes Optional character vector for electrode names, if not provided, row names of data are used.
+#' @param times Optional numeric vector of time points.
+#' @param startTime Optional numeric value for start time, if provided, times will be calculated based on this and samplingRate.
+#' @param samplingRate Optional numeric value for sampling rate, if provided, times will be calculated based on this and startTime.
+#' @param rowData Optional data frame containing metadata for rows (electrodes).
+#' @param colData Optional data frame containing metadata for columns (time points).
+#' @param metaData Optional list containing metadata for the Epoch object.
 #' @export
 #' @return An Epoch object
-Epoch <- function(data, electrodes = NULL, timeRanges = NULL, times = NULL) {
-    if (!is.null(times) && !is.null(timeRanges)) {
-        stop("Only one of times or timeRanges can be non-null")
+Epoch <- function(
+    table,
+    electrodes = NULL, times = NULL, 
+    startTime = NULL, samplingRate = NULL,
+    rowData = NULL, colData = NULL, metaData = NULL) {
+    if (!is.null(times) && !is.null(startTime)) {
+        stop("Only one of times or startTime can be non-null")
     }
-    if (!is.null(timeRanges) && length(timeRanges) != 2) {
-        stop("timeRanges must be a numeric vector of length 2")
+    if (xor(is.null(startTime), is.null(samplingRate))) {
+        stop("Both startTime and samplingRate must be provided or both must be NULL")
     }
-    if (!is.null(times) && length(times) != ncol(data)) {
-        stop("Length of times must be equal to number of columns in data")
+    if (!is.null(startTime) && !is.null(samplingRate)) {
+        times <- startTime + seq(0, ncol(table) - 1) / samplingRate
     }
-    if (!is.null(electrodes) && nrow(data) != length(electrodes)) {
-        stop("Length of electrodes must be equal to number of rows in data")
+
+    if (is.null(rowData)) {
+        rowData <- data.frame()
+    }
+    if (is.null(colData)) {
+        colData <- data.frame()
+    }
+
+    if (!is(rowData, "data.frame")) {
+        stop("rowData must be a data.frame")
+    }
+
+    if (!is(colData, "data.frame")) {
+        stop("colData must be a data.frame")
     }
 
     # set default time points if not provided
     if (is.null(times)) {
-        if (is.null(timeRanges)) {
-            ## check if data has colnames as time points
-            if (!is.null(colnames(data))) {
-                times <- tryToNum(colnames(data))
-            }
-        } else {
-            times <- seq(timeRanges[1], timeRanges[2], length.out = nrow(data))
+        if ("times" %in% names(colData)) {
+            times <- colData$times
         }
-    } else {
-        times <- as.numeric(times)
     }
 
-
-    # Set default electrode names if not provided
+    # Set electrode names
     if (is.null(electrodes)) {
-        electrodes <- if (!is.null(rownames(data))) {
-            rownames(data)
-        } else {
-            paste0("E", seq_len(nrow(data)))
+        if ("electrodes" %in% names(rowData)) {
+            electrodes <- rowData$electrodes
+        } else if (!is.null(rownames(table))) {
+            electrodes <- rownames(table)
         }
     }
 
-    rownames(data) <- electrodes
-    colnames(data) <- NULL
+
+    if (!is.null(times) && length(times) != ncol(table)) {
+        stop("Length of times must be equal to number of columns in data")
+    }
+    if (!is.null(electrodes) && length(electrodes) != nrow(table)) {
+        stop("Length of electrodes must be equal to number of rows in data")
+    }
+
+
+    rowData$electrodes <- electrodes
+    colData$times <- times
+
+    rownames(table) <- electrodes
+    colnames(table) <- times
+
+    ## make sure electrodes is the first column if exists
+    if ("electrodes" %in% names(rowData)) {
+        rowData <- rowData[, c("electrodes", setdiff(names(rowData), "electrodes"))]
+    }
+
+    ## make sure times is the first column if exists
+    if ("times" %in% names(colData)) {
+        colData <- colData[, c("times", setdiff(names(colData), "times"))]
+    }
 
     # Create new Epoch object
     .Epoch(
-        data = data,
-        times = times
+        table = table,
+        rowData = rowData,
+        colData = colData
     )
 }
 
-###############################
-## getter and setter
-###############################
+.times <- function(x) {
+    colData(x)$times
+}
 
-
-
-###############################
-## Data Conversion Methods
-###############################
+.electrodes <- function(x) {
+    rowData(x)$electrodes
+}
 
 
 ###############################
 ## other Methods
 ###############################
-#' @description `truncateTime`: Truncating time range
+#' Methods for Epoch class
+#' 
+#' @description `clip`: Truncating time range
 #'
-#' @param from Numeric value specifying start of new time range
-#' @param to Numeric value specifying end of new time range
-#' @return truncateTime: Truncated object
+#' @param start Numeric value specifying start of new time range
+#' @param end Numeric value specifying end of new time range
+#' @return clip: clip the time range of the Epoch object
 #' @rdname Epoch-method
 #' @export
-setGeneric("truncateTime", function(x, from, to) standardGeneric("truncateTime"))
+setGeneric("crop", function(x, start, end) standardGeneric("crop"))
 
 #' @rdname Epoch-method
 #' @export
-setMethod("truncateTime", "Epoch", function(x, from, to) {
-    if (is.null(x$times)) {
-        if (!isWholeNumber(from) || !isWholeNumber(to)) {
+setMethod("crop", "Epoch", function(x, start, end) {
+    times <- .times(x)
+    if (is.null(times)) {
+        if (!isWholeNumber(start) || !isWholeNumber(end)) {
             stop("Time points is not defined for this Epoch object, from and to must be whole numbers")
         }
-        indices <- seq(from, to)
+        indices <- seq(start, end)
         newTimes <- NULL
     } else {
         # current time points
-        times <- x$times
         # Find indices within new time range
-        indices <- which(times >= from & times <= to)
-        newTimes <- times[indices]
+        indices <- which(times >= start & times <= end)
     }
 
-    newData <- x$data[, indices, drop = FALSE]
-
-    # Create new Epoch object with truncated data
-    Epoch(
-        data = newData,
-        times = newTimes
-    )
+    x[, indices] 
 })
 
 
-#' @param object Epoch object
-#' @rdname Epoch-method
-#' @export
-setMethod("show", "Epoch", function(object) {
-    dt <- object$data
-    pprint(dt, rowdots = 4, coldots = 4, digits = 3)
-    cat("\n")
-    if (!is.null(object$times)) {
-        timeRange <- range(object$times)
-        cat(glue("Time range: {timeRange[1]} to {timeRange[2]}"))
-        cat("\n")
-    }
-    cat("Use $ to access its methods. see \"?`Epoch-method`\"\n")
-    invisible(object)
-})
+
