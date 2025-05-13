@@ -6,3 +6,8 @@ tryToNum <- function(x) {
         return(NULL)
     }
 }
+
+
+isWholeNumber <- function(x) {
+    return(x %% 1 == 0)
+}

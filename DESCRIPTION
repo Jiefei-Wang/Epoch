@@ -16,6 +16,7 @@ Imports:
     methods,
     ramify,
     TableContainer,
-    glue
+    glue,
+    osfr
 SystemRequirements: GNU make
 LazyData: true

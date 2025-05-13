@@ -13,6 +13,8 @@ crop(x, start, end)
 \S4method{show}{Epoch}(object)
 }
 \arguments{
+\item{x}{An Epoch object}
+
 \item{start}{Numeric value specifying start of new time range}
 
 \item{end}{Numeric value specifying end of new time range}

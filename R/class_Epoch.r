@@ -55,52 +55,23 @@ Epoch <- function(
         stop("colData must be a data.frame")
     }
 
-    # set default time points if not provided
-    if (is.null(times)) {
-        if ("times" %in% names(colData)) {
-            times <- colData$times
-        }
+    # set the time points of the table
+    if (!is.null(times)) {
+        colnames(table) <- times
     }
 
-    # Set electrode names
-    if (is.null(electrodes)) {
-        if ("electrodes" %in% names(rowData)) {
-            electrodes <- rowData$electrodes
-        } else if (!is.null(rownames(table))) {
-            electrodes <- rownames(table)
-        }
+    # set the electrodes of the table
+    if (!is.null(electrodes)) {
+        rownames(table) <- electrodes
     }
 
-
-    if (!is.null(times) && length(times) != ncol(table)) {
-        stop("Length of times must be equal to number of columns in data")
-    }
-    if (!is.null(electrodes) && length(electrodes) != nrow(table)) {
-        stop("Length of electrodes must be equal to number of rows in data")
-    }
-
-
-    rowData$electrodes <- electrodes
-    colData$times <- times
-
-    rownames(table) <- electrodes
-    colnames(table) <- times
-
-    ## make sure electrodes is the first column if exists
-    if ("electrodes" %in% names(rowData)) {
-        rowData <- rowData[, c("electrodes", setdiff(names(rowData), "electrodes"))]
-    }
-
-    ## make sure times is the first column if exists
-    if ("times" %in% names(colData)) {
-        colData <- colData[, c("times", setdiff(names(colData), "times"))]
-    }
 
     # Create new Epoch object
     .Epoch(
         table = table,
         rowData = rowData,
-        colData = colData
+        colData = colData,
+        metaData = metaData
     )
 }
 
@@ -120,6 +91,7 @@ Epoch <- function(
 #' 
 #' @description `clip`: Truncating time range
 #'
+#' @param x An Epoch object
 #' @param start Numeric value specifying start of new time range
 #' @param end Numeric value specifying end of new time range
 #' @return clip: clip the time range of the Epoch object

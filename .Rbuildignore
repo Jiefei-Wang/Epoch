@@ -1,2 +1,5 @@
 ^Epoch\.Rproj$
 ^\.Rproj\.user$
+cecile/
+scripts/
+^\.httr-oauth$

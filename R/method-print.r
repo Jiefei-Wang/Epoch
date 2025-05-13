@@ -10,7 +10,7 @@ setMethod("show", "Epoch",
         md <- metaData(object)
 
         # --- Table Preview ---
-        cat("# Epoch:\n")
+        cat("Epoch Object:\n")
         .printTable(tbl, header = "Time")
 
         # --- rowData ---
