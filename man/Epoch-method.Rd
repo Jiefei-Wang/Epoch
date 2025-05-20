@@ -9,7 +9,7 @@
 \alias{show,Epoch-method}
 \alias{dim,Epoch-method}
 \alias{dimnames,Epoch-method}
-\alias{[,TableContainer-method}
+\alias{[,Epoch-method}
 \title{Methods for Epoch class}
 \usage{
 crop(x, start, end)
@@ -26,7 +26,7 @@ times(x)
 
 \S4method{dimnames}{Epoch}(x)
 
-\S4method{[}{TableContainer}(x, i, j, ..., drop = TRUE)
+\S4method{[}{Epoch}(x, i, j, ..., drop = TRUE)
 }
 \arguments{
 \item{x}{An Epoch object}

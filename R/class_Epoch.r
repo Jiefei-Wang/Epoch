@@ -7,7 +7,7 @@ setClassUnion("data.frameOrNULL", c("data.frame", "NULL"))
 #' @description S4 class to handle epoch data with electrodes and time points
 #' @slot data a tibble containing epoch data (columns=time points, rows=electrodes)
 #' @slot times Numeric vector containing time range
-#' @export 
+#' @exportClass Epoch
 .Epoch <- setClass("Epoch",
     slots = list(),
     contains = "TableContainer",
@@ -35,8 +35,8 @@ setClassUnion("data.frameOrNULL", c("data.frame", "NULL"))
 #' @param rowData Optional data frame containing metadata for rows (electrodes).
 #' @param colData Optional data frame containing metadata for columns (time points).
 #' @param metaData Optional list containing metadata for the Epoch object.
-#' @exportClass Epoch
 #' @return An Epoch object
+#' @export 
 Epoch <- function(
     table,
     electrodes = NULL, times = NULL, 

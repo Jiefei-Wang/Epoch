@@ -1,3 +1,4 @@
+# These functions do not have any meaningful implementation, just wrapping
 
 #' @rdname Epoch-method
 #' @export
@@ -20,11 +21,11 @@ setMethod("dimnames", "Epoch", function(x) {
 #' @rdname Epoch-method
 #' @return `[`: A new Epoch object with the selected data.
 #' @export
-setMethod("[", signature(x = "TableContainer"), 
+setMethod("[", signature(x = "Epoch"), 
 function(x, i, j, ..., drop = TRUE) {
     ## Call the next method in the chain
     result <- callNextMethod()
-    ## Check if the result is a TableContainer
+    ## make sure the result is an Epoch object
     result <- .TableContainer2Epoch(result)
     result
 })
