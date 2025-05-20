@@ -7,12 +7,24 @@ setClassUnion("data.frameOrNULL", c("data.frame", "NULL"))
 #' @description S4 class to handle epoch data with electrodes and time points
 #' @slot data a tibble containing epoch data (columns=time points, rows=electrodes)
 #' @slot times Numeric vector containing time range
+#' @export 
 .Epoch <- setClass("Epoch",
     slots = list(),
     contains = "TableContainer",
 )
 
-
+.TableContainer2Epoch <- function(x) {
+    if (!is(x, "TableContainer")) {
+        return(x)
+    }
+    # Create a new Epoch object
+    .Epoch(
+        table = tblData(x),
+        rowData = rowData(x),
+        colData = colData(x),
+        metaData = metaData(x)
+    )
+}
 
 #' Constructor for Epoch class
 #' @param table Matrix containing epoch data (rows=electrodes, columns=time points)
@@ -23,7 +35,7 @@ setClassUnion("data.frameOrNULL", c("data.frame", "NULL"))
 #' @param rowData Optional data frame containing metadata for rows (electrodes).
 #' @param colData Optional data frame containing metadata for columns (time points).
 #' @param metaData Optional list containing metadata for the Epoch object.
-#' @export
+#' @exportClass Epoch
 #' @return An Epoch object
 Epoch <- function(
     table,
@@ -76,11 +88,11 @@ Epoch <- function(
 }
 
 .times <- function(x) {
-    colData(x)$times
+    as.numeric(colnames(tblData(x)))
 }
 
 .electrodes <- function(x) {
-    rowData(x)$electrodes
+    as.numeric(rownames(tblData(x)))
 }
 
 
@@ -108,7 +120,6 @@ setMethod("crop", "Epoch", function(x, start, end) {
             stop("Time points is not defined for this Epoch object, from and to must be whole numbers")
         }
         indices <- seq(start, end)
-        newTimes <- NULL
     } else {
         # current time points
         # Find indices within new time range
@@ -118,5 +129,20 @@ setMethod("crop", "Epoch", function(x, start, end) {
     x[, indices] 
 })
 
+#' Get time points from an Epoch object
+#' @param x An Epoch object
+#' @return A numeric vector of time points, or column indices if time points are not defined
+#' @rdname Epoch-method
+#' @export
+setGeneric("times", function(x) standardGeneric("times"))
 
+#' @rdname Epoch-method
+#' @export
+setMethod("times", "Epoch", function(x) {
+    tms <- .times(x)
+    if (!length(tms)) {
+        tms <- seq(0, ncol(x) - 1)
+    }
+    tms
+})
 

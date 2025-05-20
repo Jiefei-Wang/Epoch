@@ -3,8 +3,6 @@
 #' @import methods
 #' @importFrom ramify pprint
 #' @importFrom glue glue
-#' @export dim
-#' @export dimnames
 #' @export nrow
 #' @export ncol
 #' @export rownames

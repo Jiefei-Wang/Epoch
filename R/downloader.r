@@ -72,7 +72,7 @@ EpochDownloader <- function(id = "7rnft",
     progress = TRUE,
     path = file.path(tempdir(), id)) {
     files <- osf_retrieve_node(id) |>
-        osf_ls_files()
+        osf_ls_files(n_max = Inf)
     ## remove .rds extension from name column
     dataNames <- gsub("\\.rds$", "", files$name)
 
