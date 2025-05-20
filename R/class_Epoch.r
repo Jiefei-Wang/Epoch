@@ -129,19 +129,18 @@ setMethod("crop", "Epoch", function(x, start, end) {
     x[, indices] 
 })
 
-#' Get time points from an Epoch object
-#' @param x An Epoch object
-#' @return A numeric vector of time points, or column indices if time points are not defined
+
+#' @return `coltimes`: A numeric vector of time points, or column indices if time points are not defined
 #' @rdname Epoch-method
 #' @export
-setGeneric("times", function(x) standardGeneric("times"))
+setGeneric("coltimes", function(x) standardGeneric("coltimes"))
 
 #' @rdname Epoch-method
 #' @export
-setMethod("times", "Epoch", function(x) {
+setMethod("coltimes", "Epoch", function(x) {
     tms <- .times(x)
     if (!length(tms)) {
-        tms <- seq(0, ncol(x) - 1)
+        tms <- seq(1, ncol(x))
     }
     tms
 })

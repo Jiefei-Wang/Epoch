@@ -4,8 +4,8 @@
 \name{crop}
 \alias{crop}
 \alias{crop,Epoch-method}
-\alias{times}
-\alias{times,Epoch-method}
+\alias{coltimes}
+\alias{coltimes,Epoch-method}
 \alias{show,Epoch-method}
 \alias{dim,Epoch-method}
 \alias{dimnames,Epoch-method}
@@ -16,9 +16,9 @@ crop(x, start, end)
 
 \S4method{crop}{Epoch}(x, start, end)
 
-times(x)
+coltimes(x)
 
-\S4method{times}{Epoch}(x)
+\S4method{coltimes}{Epoch}(x)
 
 \S4method{show}{Epoch}(object)
 
@@ -48,7 +48,7 @@ times(x)
 \value{
 clip: clip the time range of the Epoch object
 
-A numeric vector of time points, or column indices if time points are not defined
+\code{coltimes}: A numeric vector of time points, or column indices if time points are not defined
 
 \code{[}: A new Epoch object with the selected data.
 }
