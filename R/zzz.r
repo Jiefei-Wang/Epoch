@@ -1,8 +1,10 @@
 #' @import TableContainer 
 #' @import osfr
 #' @import methods
+#' @import ggplot2
 #' @importFrom ramify pprint
 #' @importFrom glue glue
+#' @importFrom rlang .data
 #' @export nrow
 #' @export ncol
 #' @export rownames
