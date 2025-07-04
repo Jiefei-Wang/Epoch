@@ -5,13 +5,13 @@
 \title{EpochDownloader constructor}
 \usage{
 EpochDownloader(
-  id = "fragility",
+  id = EpochRepos()[[1]],
   progress = TRUE,
   path = file.path(tempdir(), id)
 )
 }
 \arguments{
-\item{id}{The ID of the OSF project (the default points to the BHI project).}
+\item{id}{Either the ID of the OSF project or the name of the iEEG dataset. Check a list of available projects using \code{EpochRepos()}. The default points to the fragility data from the Fragility multi-center retrospective study.}
 
 \item{progress}{Logical indicating whether to show progress during download.}
 

@@ -4,7 +4,10 @@
 \alias{update_downloader_repos}
 \title{Update downloader repositories configuration}
 \usage{
-update_downloader_repos()
+update_downloader_repos(verbose = TRUE)
+}
+\arguments{
+\item{verbose}{Logical indicating whether to show messages}
 }
 \value{
 Invisibly returns TRUE if successful, FALSE if failed

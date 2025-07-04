@@ -4,10 +4,7 @@
 \alias{get_config_data}
 \title{Get configuration data from remote URL}
 \usage{
-get_config_data(verbose = TRUE)
-}
-\arguments{
-\item{verbose}{Logical indicating whether to show messages}
+get_config_data()
 }
 \value{
 A list of project configurations
