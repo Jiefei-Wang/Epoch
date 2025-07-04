@@ -114,18 +114,8 @@ setGeneric("crop", function(x, start, end) standardGeneric("crop"))
 #' @rdname Epoch-method
 #' @export
 setMethod("crop", "Epoch", function(x, start, end) {
-    times <- .times(x)
-    if (is.null(times)) {
-        if (!isWholeNumber(start) || !isWholeNumber(end)) {
-            stop("Time points is not defined for this Epoch object, from and to must be whole numbers")
-        }
-        indices <- seq(start, end)
-    } else {
-        # current time points
-        # Find indices within new time range
-        indices <- which(times >= start & times <= end)
-    }
-
+    times <- coltimes(x)
+    indices <- which(times >= start & times <= end)
     x[, indices] 
 })
 

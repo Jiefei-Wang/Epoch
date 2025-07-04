@@ -3,8 +3,16 @@
 ## Utils
 ##############################
 load_single_file <- function(file_path) {
-    args <- readRDS(file_path)
-    do.call(Epoch, args)
+    tryCatch(
+        {
+            args <- readRDS(file_path)
+            do.call(Epoch, args)
+        }, 
+        error = function(e) {
+            file.remove(file_path)
+            stop(paste("Error loading file:", file_path, "\n", e$message))
+        }
+    )
 }
 
 
