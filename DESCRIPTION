@@ -17,6 +17,7 @@ Imports:
     ramify,
     TableContainer,
     glue,
-    osfr
+    osfr,
+    jsonlite
 SystemRequirements: GNU make
 LazyData: true

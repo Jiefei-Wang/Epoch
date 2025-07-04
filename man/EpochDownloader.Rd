@@ -4,7 +4,11 @@
 \alias{EpochDownloader}
 \title{EpochDownloader constructor}
 \usage{
-EpochDownloader(id = "7rnft", progress = TRUE, path = file.path(tempdir(), id))
+EpochDownloader(
+  id = "fragility",
+  progress = TRUE,
+  path = file.path(tempdir(), id)
+)
 }
 \arguments{
 \item{id}{The ID of the OSF project (the default points to the BHI project).}
