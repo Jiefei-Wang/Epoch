@@ -21,7 +21,7 @@ coltimes(x)
 
 \S4method{coltimes}{Epoch}(x)
 
-\S4method{plot}{Epoch,missing}(x, y, gaps = 2, resolution = 2048, ...)
+\S4method{plot}{Epoch,missing}(x, y, gaps = 2, timeResolution = 2048, maxLabels = 50, ...)
 
 \S4method{show}{Epoch}(object)
 
@@ -42,7 +42,9 @@ coltimes(x)
 
 \item{gaps}{Numeric value specifying the gap between electrode traces (default: 2)}
 
-\item{resolution}{Number of time points to keep for each electrode}
+\item{timeResolution}{Maximum number of time points to keep for each electrode (default: 2048)}
+
+\item{maxLabels}{Maximum number of electrode labels to display on the y-axis (default: 50)}
 
 \item{...}{Additional arguments.}
 

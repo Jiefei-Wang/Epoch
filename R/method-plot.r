@@ -18,7 +18,8 @@
 #' @param x An Epoch object
 #' @param y Not used (for S4 method compatibility)
 #' @param gaps Numeric value specifying the gap between electrode traces (default: 2)
-#' @param resolution Number of time points to keep for each electrode
+#' @param timeResolution Maximum number of time points to keep for each electrode (default: 2048)
+#' @param maxLabels Maximum number of electrode labels to display on the y-axis (default: 50)
 #' @param ... Additional arguments (not currently used)
 #' @return A ggplot object showing iEEG electrode traces
 #'
@@ -35,17 +36,16 @@
 #' @rdname Epoch-method
 #' @export
 setMethod("plot", signature(x = "Epoch", y = "missing"), 
-    function(x, y, gaps = 2, resolution = 2048,  ...) {
+    function(x, y, gaps = 2, timeResolution = 2048, maxLabels = 50, ...) {
         # Convert matrix to Epoch if needed (already handled in method signature)
-        
         elecNames <- rownames(x)
         data <- tblData(x)
         elecNum <- nrow(data)
         timesNum <- ncol(data)
 
         ## The indices of the time points to plot
-        if (timesNum > resolution) {
-            indices <- floor(seq(1, timesNum, length.out = resolution))
+        if (timesNum > timeResolution) {
+            indices <- floor(seq(1, timesNum, length.out = timeResolution))
         }else{
             indices <- seq_len(timesNum)
         }
@@ -84,9 +84,19 @@ setMethod("plot", signature(x = "Epoch", y = "missing"),
             p <- p + ggplot2::geom_line(ggplot2::aes(x = .data$timeTicks, y = .data[[elec]]))
         }
 
+        
+        ## limit the number of labels on y-axis
+        elecLabels <- elecNamesReversed
+        if (length(elecLabels) > maxLabels) {
+            by_num <- ceiling(length(elecLabels)/maxLabels)
+            label_idx <- seq(length(elecLabels), 1, by=-by_num)
+            elecLabels[-label_idx] <- ""
+        }
+
+
         p +
             ggplot2::labs(x = xlabel, y = "Electrode") +
-            ggplot2::scale_y_continuous(labels = elecNamesReversed, breaks = breakplot) +
+            ggplot2::scale_y_continuous(labels = elecLabels, breaks = breakplot) +
             ggplot2::theme_minimal()
     }
 )
