@@ -3,3 +3,4 @@
 cecile/
 scripts/
 ^\.httr-oauth$
+^\.github$

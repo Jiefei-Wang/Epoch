@@ -1,3 +1,17 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# Epoch: Epileptogenic Zone Localization Based on neural Fragility EEG marker
+
+[![](https://img.shields.io/badge/devel%20version-0.99.0-blue.svg)](https://github.com/Jiefei-Wang/Epoch)
+[![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![](https://img.shields.io/github/languages/code-size/Jiefei-Wang/Epoch.svg)](https://github.com/Jiefei-Wang/Epoch)
+[![](https://img.shields.io/github/last-commit/Jiefei-Wang/Epoch.svg)](https://github.com/Jiefei-Wang/Epoch/commits/main)
+[![R-CMD-check](https://github.com/Jiefei-Wang/Epoch/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Jiefei-Wang/Epoch/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/Jiefei-Wang/Epoch/graph/badge.svg)](https://app.codecov.io/gh/Jiefei-Wang/Epoch)
+
+
 ## Install Package
 This package depends on `TableContainer` package, which is not available on CRAN. You can install it from GitHub using the following command:
 ```{r}
