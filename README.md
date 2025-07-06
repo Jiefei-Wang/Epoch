@@ -8,8 +8,7 @@
 [![](https://img.shields.io/github/languages/code-size/Jiefei-Wang/Epoch.svg)](https://github.com/Jiefei-Wang/Epoch)
 [![](https://img.shields.io/github/last-commit/Jiefei-Wang/Epoch.svg)](https://github.com/Jiefei-Wang/Epoch/commits/main)
 [![R-CMD-check](https://github.com/Jiefei-Wang/Epoch/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Jiefei-Wang/Epoch/actions/workflows/R-CMD-check.yaml)
-[![Codecov test
-coverage](https://codecov.io/gh/Jiefei-Wang/Epoch/graph/badge.svg)](https://app.codecov.io/gh/Jiefei-Wang/Epoch)
+[![Codecov test coverage](https://codecov.io/gh/Jiefei-Wang/Epoch/graph/badge.svg)](https://app.codecov.io/gh/Jiefei-Wang/Epoch)
 
 
 ## Install Package
