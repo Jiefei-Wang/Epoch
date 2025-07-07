@@ -5,15 +5,18 @@
 \title{EpochDownloader constructor}
 \usage{
 EpochDownloader(
-  id = EpochRepos()[[1]],
+  id = NULL,
   progress = TRUE,
+  verbose = FALSE,
   path = file.path(tempdir(), id)
 )
 }
 \arguments{
-\item{id}{Either the ID of the OSF project or the name of the iEEG dataset. Check a list of available projects using \code{EpochRepos()}. The default points to the fragility data from the Fragility multi-center retrospective study.}
+\item{id}{Either the ID of an OSF project or the name of an iEEG projects (case insensitive). Check the available projects using \code{EpochRepos()}. The default points to the fragility data from the Fragility multi-center retrospective study.}
 
 \item{progress}{Logical indicating whether to show progress during download.}
+
+\item{verbose}{Logical indicating whether to show messages}
 
 \item{path}{The path to the temporary folder where the files will be downloaded.}
 }

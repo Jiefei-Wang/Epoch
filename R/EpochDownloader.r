@@ -74,25 +74,35 @@ download_to_tmp_folder <- function(x, file_names) {
 ##############################
 #' EpochDownloader constructor
 #' 
-#' @param id Either the ID of the OSF project or the name of the iEEG dataset. Check a list of available projects using `EpochRepos()`. The default points to the fragility data from the Fragility multi-center retrospective study.
+#' @param id Either the ID of an OSF project or the name of an iEEG projects (case insensitive). Check the available projects using `EpochRepos()`. The default points to the fragility data from the Fragility multi-center retrospective study.
 #' @param path The path to the temporary folder where the files will be downloaded.
 #' @param progress Logical indicating whether to show progress during download.
+#' @param verbose Logical indicating whether to show messages
 #' 
 #' @return An `EpochDownloader` object.
 #' @export 
-EpochDownloader <- function(id = EpochRepos()[[1]], 
+EpochDownloader <- function(id = NULL,
     progress = TRUE,
+    verbose = FALSE,
     path = file.path(tempdir(), id)) {
-    
+
     # Handle id parameter
     if (length(id) > 1) {
         id <- id[1]
     }
-    
-    # Check if id is a known project name, otherwise use as OSF project ID
-    if (id %in% names(pkg_global$.project_list)) {
-        id <- pkg_global$.project_list[[id]]
+
+    if (is.null(id)) {
+        id <- EpochRepos(verbose=verbose)[[1]]
+    } else{
+        project_list <- EpochRepos(verbose=verbose)
+        ## make it case insensitive
+        names(project_list) <- tolower(names(project_list))
+        id <- tolower(id)
+        if (id %in% names(project_list)) {
+            id <- project_list[[id]]
+        }
     }
+    
     
     files <- osf_retrieve_node(id) |>
         osf_ls_files(n_max = Inf)

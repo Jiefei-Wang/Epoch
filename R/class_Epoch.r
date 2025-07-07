@@ -5,8 +5,10 @@ setClassUnion("data.frameOrNULL", c("data.frame", "NULL"))
 
 #' @title Epoch Class
 #' @description S4 class to handle epoch data with electrodes and time points
-#' @slot data a tibble containing epoch data (columns=time points, rows=electrodes)
-#' @slot times Numeric vector containing time range
+#' @slot table a matrix containing iEEG data (columns=time points, rows=electrodes)
+#' @slot colData a data frame containing metadata for columns (time points)
+#' @slot rowData a data frame containing metadata for rows (electrodes)
+#' @slot metaData a list containing metadata for the Epoch object
 #' @exportClass Epoch
 .Epoch <- setClass("Epoch",
     slots = list(),

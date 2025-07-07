@@ -11,3 +11,10 @@ tryToNum <- function(x) {
 isWholeNumber <- function(x) {
     return(x %% 1 == 0)
 }
+
+
+.message <- function(verbose, ...) {
+    if (verbose) {
+        message(...)
+    }
+}

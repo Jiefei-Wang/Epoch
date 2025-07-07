@@ -11,8 +11,12 @@ S4 class to handle epoch data with electrodes and time points
 \section{Slots}{
 
 \describe{
-\item{\code{data}}{a tibble containing epoch data (columns=time points, rows=electrodes)}
+\item{\code{table}}{a matrix containing iEEG data (columns=time points, rows=electrodes)}
 
-\item{\code{times}}{Numeric vector containing time range}
+\item{\code{colData}}{a data frame containing metadata for columns (time points)}
+
+\item{\code{rowData}}{a data frame containing metadata for rows (electrodes)}
+
+\item{\code{metaData}}{a list containing metadata for the Epoch object}
 }}
 

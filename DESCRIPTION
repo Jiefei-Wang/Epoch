@@ -1,11 +1,10 @@
 Package: Epoch
-Title: What the Package Does (One Line, Title Case)
+Title: A Data Package for iEEG Epoch Data
 Version: 0.0.0.9000
 Authors@R: 
-    person("Jiefei", "Wang", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    person("Jiefei", "Wang", , "szwjf08@gmail.com", role = c("aut", "cre"))
+Description: This package provides tools for working with iEEG epoch data, including downloading, processing, and visualizing the data.
+License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
@@ -19,7 +18,8 @@ Imports:
     TableContainer,
     glue,
     osfr,
-    jsonlite
+    jsonlite,
+    rlang
 SystemRequirements: GNU make
 LazyData: true
 Suggests: 

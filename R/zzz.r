@@ -6,6 +6,7 @@
 #' @importFrom glue glue
 #' @importFrom jsonlite fromJSON
 #' @importFrom rlang .data
+#' @importFrom stats sd
 #' @export nrow
 #' @export ncol
 #' @export rownames
@@ -18,6 +19,7 @@
 #' @export rowData<-
 #' @export colData<-
 #' @export metaData<-
+#' 
 NULL
 
 pkg_global <- new.env(parent = emptyenv())

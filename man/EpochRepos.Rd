@@ -4,7 +4,10 @@
 \alias{EpochRepos}
 \title{Get the list of available projects}
 \usage{
-EpochRepos()
+EpochRepos(verbose = TRUE)
+}
+\arguments{
+\item{verbose}{Logical indicating whether to show messages}
 }
 \value{
 A list of project names and their corresponding OSF project IDs.

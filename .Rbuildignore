@@ -4,3 +4,4 @@ cecile/
 scripts/
 ^\.httr-oauth$
 ^\.github$
+^LICENSE\.md$

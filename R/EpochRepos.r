@@ -8,14 +8,11 @@
 get_config_data <- function() {
     url <- "https://raw.githubusercontent.com/Jiefei-Wang/EpochData/refs/heads/main/config.json"
     
-    tryCatch({
-        config <- fromJSON(url)
-        config <- config[[.config_version]]
-        return(list(config=config, success = TRUE))
-    }, error = function(e) {
-        message("Failed to fetch remote configuration: ", e$message)
-        return(list(config = .default_project_list, success = FALSE))
-    })
+    repos <- osf_retrieve_node("v9qyb")
+    config_json <- repos$meta[[1]][["attributes"]][["description"]]
+    config <- fromJSON(config_json)
+    config <- config[[.config_version]]
+    config
 }
 
 
@@ -33,28 +30,16 @@ get_config_data <- function() {
 #' will remain unchanged.
 #' 
 #' @param verbose Logical indicating whether to show messages
-#' @return Invisibly returns TRUE if successful, FALSE if failed
+#' @return No return value, called for side effects.
 #' @export
-update_downloader_repos <- function(verbose = TRUE) {
-    if (verbose)
-        message("Attempting to update project repository configuration...")
+updateRepos <- function(verbose = TRUE) {
+    .message(verbose, "Attempting to update project repository configuration...")
+
+    config <- get_config_data()
+    pkg_global$.project_list <- config
+    .message(verbose, 
+    "Success. Available projects: ", paste(names(pkg_global$.project_list), collapse = ", "))
     
-    result <- get_config_data()
-    new_config <- result$config
-    success <- result$success
-    
-    # Check if we got the default config
-    if (success) {
-        pkg_global$.project_list <- new_config
-        if (verbose){
-            message("Project repository configuration updated successfully.")
-            message("Available projects: ", paste(names(pkg_global$.project_list), collapse = ", "))
-        }
-    } else {
-        if (verbose)
-            message("Failed to update configuration. Current settings remain unchanged.")
-    }
-    return(invisible(success))
 }
 
 #' Get the list of available projects
@@ -63,14 +48,17 @@ update_downloader_repos <- function(verbose = TRUE) {
 #' This function returns the list of available projects.
 #' If the configuration has not been fetched yet, it will
 #' automatically update the project list from the remote repository.
-#' 
+#' @inheritParams updateRepos
 #' @return A list of project names and their corresponding OSF project IDs.
 #' @examples EpochRepos()
 #' @export
-EpochRepos <- function(){
+EpochRepos <- function(verbose = TRUE) {
     if (!pkg_global$.config_fetched) {
-        update_downloader_repos(verbose = TRUE) 
+        .message(verbose, "Configuration not fetched yet. Fetching now...")
+        updateRepos(verbose = verbose) 
         pkg_global$.config_fetched <- TRUE
+    }else{
+        .message(verbose, "Configuration already fetched.")
     }
     pkg_global$.project_list
 }
