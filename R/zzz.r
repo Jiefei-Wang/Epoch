@@ -1,12 +1,13 @@
 #' @import TableContainer 
 #' @import osfr
 #' @import methods
-#' @import ggplot2
 #' @importFrom ramify pprint
 #' @importFrom glue glue
 #' @importFrom jsonlite fromJSON
-#' @importFrom rlang .data
 #' @importFrom stats sd
+#' @importFrom rlang .data
+#' @importFrom ggplot2 ggplot geom_line aes labs scale_y_continuous theme
+#' @importFrom ggtext element_markdown
 #' @export nrow
 #' @export ncol
 #' @export rownames

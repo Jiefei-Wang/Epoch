@@ -19,7 +19,8 @@ Imports:
     glue,
     osfr,
     jsonlite,
-    rlang
+    rlang,
+    ggtext
 SystemRequirements: GNU make
 LazyData: true
 Suggests: 
