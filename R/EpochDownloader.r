@@ -78,13 +78,15 @@ download_to_tmp_folder <- function(x, file_names) {
 #' @param path The path to the temporary folder where the files will be downloaded.
 #' @param progress Logical indicating whether to show progress during download.
 #' @param verbose Logical indicating whether to show messages
+#' @param ... Unused parameters for future extensions.
 #' 
 #' @return An `EpochDownloader` object.
 #' @export 
 EpochDownloader <- function(id = NULL,
     progress = TRUE,
     verbose = FALSE,
-    path = file.path(tempdir(), id)) {
+    path = file.path(tempdir(), id),
+    ...) {
 
     # Handle id parameter
     if (length(id) > 1) {

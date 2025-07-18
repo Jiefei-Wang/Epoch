@@ -25,7 +25,13 @@ setMethod("[", signature(x = "Epoch"),
 function(x, i, j, ..., drop = TRUE) {
     ## Call the next method in the chain
     result <- callNextMethod()
-    ## make sure the result is an Epoch object
-    result <- .TableContainer2Epoch(result)
-    result
+    
+    # Create a new Epoch object
+    .Epoch(
+        rawEpoch = rawEpoch,
+        table = tblData(result),
+        rowData = rowData(result),
+        colData = colData(result),
+        metaData = metaData(result)
+    )
 })

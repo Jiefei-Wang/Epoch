@@ -8,6 +8,7 @@
 #' @importFrom rlang .data
 #' @importFrom ggplot2 ggplot geom_line aes labs scale_y_continuous theme
 #' @importFrom ggtext element_markdown
+#' @importFrom gsignal butter filtfilt
 #' @export nrow
 #' @export ncol
 #' @export rownames

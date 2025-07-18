@@ -8,7 +8,8 @@ EpochDownloader(
   id = NULL,
   progress = TRUE,
   verbose = FALSE,
-  path = file.path(tempdir(), id)
+  path = file.path(tempdir(), id),
+  ...
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ EpochDownloader(
 \item{verbose}{Logical indicating whether to show messages}
 
 \item{path}{The path to the temporary folder where the files will be downloaded.}
+
+\item{...}{Unused parameters for future extensions.}
 }
 \value{
 An \code{EpochDownloader} object.

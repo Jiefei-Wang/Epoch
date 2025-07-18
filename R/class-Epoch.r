@@ -15,18 +15,6 @@ setClassUnion("data.frameOrNULL", c("data.frame", "NULL"))
     contains = "TableContainer",
 )
 
-.TableContainer2Epoch <- function(x) {
-    if (!is(x, "TableContainer")) {
-        return(x)
-    }
-    # Create a new Epoch object
-    .Epoch(
-        table = tblData(x),
-        rowData = rowData(x),
-        colData = colData(x),
-        metaData = metaData(x)
-    )
-}
 
 #' Constructor for Epoch class
 #' @param table Matrix containing epoch data (rows=electrodes, columns=time points)
