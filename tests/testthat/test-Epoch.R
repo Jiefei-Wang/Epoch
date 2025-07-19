@@ -32,16 +32,6 @@ test_that("crop method for Epoch", {
   expect_true(all(cropped_times <= 5))
   expect_lt(ncol(tblData(cropped_epoch_time)), ncol(tblData(dummy_epoch)))
 
-  dummy_epoch_no_time <- Epoch(dummy_data)
-  # Verify no colnames that look like times, or they are just default indices
-  expect_equal(coltimes(dummy_epoch_no_time), seq_len(col_num))
-  expect_true(is.null(
-    colnames(tblData(dummy_epoch_no_time))
-    ))
-
-  cropped_epoch_index <- crop(dummy_epoch_no_time, start = 10, end = 20) # Assuming these are indices
-  expect_s4_class(cropped_epoch_index, "Epoch")
-  expect_equal(ncol(cropped_epoch_index), 11) # 20 - 10 + 1
 })
 
 test_that("plot method for Epoch", {

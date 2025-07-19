@@ -31,6 +31,7 @@ get_config_data <- function() {
 #' 
 #' @param verbose Logical indicating whether to show messages
 #' @return No return value, called for side effects.
+#' @examples updateRepos(verbose = TRUE)
 #' @export
 updateRepos <- function(verbose = TRUE) {
     .message(verbose, "Attempting to update project repository configuration...")

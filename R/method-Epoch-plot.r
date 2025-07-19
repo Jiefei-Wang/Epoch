@@ -11,15 +11,14 @@
 #' @return A ggplot object showing iEEG electrode traces
 #'
 #' @examples
-#' \dontrun{
 #' # Create an Epoch object from sample data
 #' epoch_data <- matrix(rnorm(1000), nrow = 10)
 #' rownames(epoch_data) <- paste0("Electrode_", 1:10)
-#' epoch <- Epoch(epoch_data)
+#' epoch <- Epoch(epoch_data, startTime = 0, samplingRate = 100)
 #' 
 #' # Plot the epoch
 #' plot(epoch)
-#' }
+#' 
 #' @rdname Epoch-method
 #' @export
 setMethod("plot", signature(x = "Epoch", y = "missing"), 
@@ -64,7 +63,7 @@ setMethod("plot", signature(x = "Epoch", y = "missing"),
     elecNames <- c(elecNames[group1], elecNames[group2])
 
     # Standardize the data
-    plotData <- .standardizeIEEG(plotData)
+    plotData <- t(.standardizeIEEG(plotData))
     plotData <- as.data.frame(plotData)
     plotData$timeTicks <- timeTicks
 

@@ -20,7 +20,8 @@ Imports:
     osfr,
     jsonlite,
     rlang,
-    ggtext
+    ggtext,
+    gsignal
 SystemRequirements: GNU make
 LazyData: true
 Suggests: 

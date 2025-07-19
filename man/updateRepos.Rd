@@ -18,3 +18,6 @@ This function will attempt to download the latest configuration
 from the GitHub repository. If it fails, the current configuration
 will remain unchanged.
 }
+\examples{
+updateRepos(verbose = TRUE)
+}

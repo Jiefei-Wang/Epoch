@@ -38,3 +38,9 @@ An Epoch object
 \description{
 Constructor for Epoch class
 }
+\examples{
+epoch_data <- matrix(rnorm(1000), nrow = 10)
+rownames(epoch_data) <- paste0("Electrode_", 1:10)
+epoch <- Epoch(epoch_data, startTime = 0, samplingRate = 100)
+
+}

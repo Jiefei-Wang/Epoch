@@ -9,6 +9,8 @@ tryToNum <- function(x) {
 
 
 isWholeNumber <- function(x) {
+    stopifnot(is.numeric(x))
+    stopifnot(length(x) == 1)
     return(x %% 1 == 0)
 }
 
@@ -62,7 +64,15 @@ isWholeNumber <- function(x) {
     if (is.data.frame(data)) {
         data <- as.matrix(data)
     }
-    
     # Z-score standardization per electrode
-    apply(data, 1, function(x) (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE))
+    # with a small offset to variance
+    mat <- apply(
+        data, 1, 
+        function(x){
+            mean <- mean(x, na.rm = TRUE)
+            sd <- sd(x, na.rm = TRUE) + 1
+            (x - mean) / sd
+        }
+    )
+    t(mat)
 }

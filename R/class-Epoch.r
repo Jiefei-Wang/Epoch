@@ -38,12 +38,21 @@ setClassUnion("data.frameOrNULL", c("data.frame", "NULL"))
 #' @param colData Optional data frame containing metadata for columns (time points).
 #' @param metaData Optional list containing metadata for the Epoch object.
 #' @return An Epoch object
+#' 
+#' @examples
+#' epoch_data <- matrix(rnorm(1000), nrow = 10)
+#' rownames(epoch_data) <- paste0("Electrode_", 1:10)
+#' epoch <- Epoch(epoch_data, startTime = 0, samplingRate = 100)
+#' 
 #' @export 
 Epoch <- function(
     table,
     electrodes = NULL, times = NULL, 
     startTime = NULL, samplingRate = NULL,
     rowData = NULL, colData = NULL, metaData = NULL) {
+    if (is.null(times) && is.null(startTime)){
+        stop("Either 'times' or 'startTime' and 'samplingRate' must be provided")
+    }
     if (!is.null(times) && !is.null(startTime)) {
         stop("Only one of times or startTime can be non-null")
     }
@@ -91,10 +100,6 @@ Epoch <- function(
 
 .times <- function(x) {
     as.numeric(colnames(tblData(x)))
-}
-
-.electrodes <- function(x) {
-    as.numeric(rownames(tblData(x)))
 }
 
 

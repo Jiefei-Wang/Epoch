@@ -82,13 +82,12 @@ A ggplot object showing iEEG electrode traces
 \code{clip}: Truncating time range
 }
 \examples{
-\dontrun{
 # Create an Epoch object from sample data
 epoch_data <- matrix(rnorm(1000), nrow = 10)
 rownames(epoch_data) <- paste0("Electrode_", 1:10)
-epoch <- Epoch(epoch_data)
+epoch <- Epoch(epoch_data, startTime = 0, samplingRate = 100)
 
 # Plot the epoch
 plot(epoch)
-}
+
 }
