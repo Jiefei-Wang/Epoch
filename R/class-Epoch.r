@@ -36,7 +36,7 @@ setClassUnion("data.frameOrNULL", c("data.frame", "NULL"))
 #' @param samplingRate Optional numeric value for sampling rate, if provided, times will be calculated based on this and startTime.
 #' @param rowData Optional data frame containing metadata for rows (electrodes).
 #' @param colData Optional data frame containing metadata for columns (time points).
-#' @param metaData Optional list containing metadata for the Epoch object.
+#' @param metaData Optional list containing metadata for the Epoch object. Element name "SamplingRate" is reserved by the Epoch class.
 #' @return An Epoch object
 #' 
 #' @examples
@@ -50,17 +50,27 @@ Epoch <- function(
     electrodes = NULL, times = NULL, 
     startTime = NULL, samplingRate = NULL,
     rowData = NULL, colData = NULL, metaData = NULL) {
-    if (is.null(times) && is.null(startTime)){
-        stop("Either 'times' or 'startTime' and 'samplingRate' must be provided")
+    if (!xor(is.null(times), is.null(startTime))) {
+        stop("You must specify exactly one of 'times' or 'startTime'")
     }
-    if (!is.null(times) && !is.null(startTime)) {
-        stop("Only one of times or startTime can be non-null")
-    }
-    if (xor(is.null(startTime), is.null(samplingRate))) {
-        stop("Both startTime and samplingRate must be provided or both must be NULL")
-    }
-    if (!is.null(startTime) && !is.null(samplingRate)) {
+    if (!is.null(startTime)) {
+        # If startTime is provided, we need to calculate times based on samplingRate
+        if (is.null(samplingRate)) {
+            stop("If 'startTime' is provided, 'samplingRate' must also be provided")
+        }
         times <- startTime + seq(0, ncol(table) - 1) / samplingRate
+    }else{
+        # If times is provided, we need to estimate samplingRate
+        estSamplingRate <- length(times) / (times[length(times)] - times[1])
+        if (is.null(samplingRate)){
+            samplingRate <- estSamplingRate
+        } else {
+            if (abs(estSamplingRate - samplingRate) > 1e-6) {
+                stop(
+                    glue("Estimated sampling rate {estSamplingRate} does not match provided sampling rate {samplingRate}.")
+                )
+            }
+        }
     }
 
     if (is.null(rowData)) {
@@ -88,6 +98,8 @@ Epoch <- function(
         rownames(table) <- electrodes
     }
 
+    # reserved metaData name
+    metaData$samplingRate <- samplingRate
 
     # Create new Epoch object
     .Epoch(
@@ -100,6 +112,18 @@ Epoch <- function(
 
 .times <- function(x) {
     as.numeric(colnames(tblData(x)))
+}
+
+.samplingRate <- function(x) {
+    if (!is.null(metaData(x)$samplingRate)) {
+        return(metaData(x)$samplingRate)
+    }
+    stop("Sampling rate is not defined in metaData")
+}
+
+`.samplingRate<-` <- function(x, value) {
+    metaData(x)$samplingRate <- value
+    x
 }
 
 

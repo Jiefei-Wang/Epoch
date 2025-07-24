@@ -7,14 +7,14 @@
 \usage{
 resample(x, ...)
 
-\S4method{resample}{Epoch}(x, freq, ...)
+\S4method{resample}{Epoch}(x, samplingRate, ...)
 }
 \arguments{
 \item{x}{An \code{Epoch} object to be resampled.}
 
 \item{...}{Additional arguments passed to \code{gsignal::resample}}
 
-\item{freq}{The new sampling frequency.}
+\item{samplingRate}{The new sampling frequency (unit: Hertz).}
 }
 \value{
 An \code{Epoch} object with the resampled data.

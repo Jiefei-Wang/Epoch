@@ -30,7 +30,7 @@ Epoch(
 
 \item{colData}{Optional data frame containing metadata for columns (time points).}
 
-\item{metaData}{Optional list containing metadata for the Epoch object.}
+\item{metaData}{Optional list containing metadata for the Epoch object. Element name "SamplingRate" is reserved by the Epoch class.}
 }
 \value{
 An Epoch object

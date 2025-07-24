@@ -10,7 +10,7 @@ setMethod("show", "Epoch",
         md <- metaData(object)
 
         # --- Table Preview ---
-        cat("Epoch Object:\n")
+        cat(glue("Epoch Object @ {.samplingRate(object)} Hz:"), "\n")
         .printTable(tbl, header = "Time")
 
         # --- rowData ---
