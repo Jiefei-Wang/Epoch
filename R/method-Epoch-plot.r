@@ -75,24 +75,38 @@ setMethod("plot", signature(x = "Epoch", y = "missing"),
         plotData[[elec]] <- plotData[[elec]] + (i-1) * gaps
     }
 
-    p <- ggplot(data = plotData)
-    for (i in seq_along(elecNamesReversed)) {
-        elec <- elecNamesReversed[i]
-        p <- p + geom_line(aes(x = .data$timeTicks, y = .data[[elec]]))
-    }
-
+    
     ## limit the number of labels on y-axis
-    if (length(elecNamesReversed) > maxLabels) {
-        by_num <- ceiling(length(elecNamesReversed)/maxLabels)
-        label_idx <- seq(length(elecNamesReversed), 1, by=-by_num)
-        elecNamesReversed[-label_idx] <- ""
+    ylabels <- elecNamesReversed
+    if (length(ylabels) > maxLabels) {
+        by_num <- ceiling(length(ylabels)/maxLabels)
+        label_idx <- seq(length(ylabels), 1, by=-by_num)
+        ylabels[-label_idx] <- ""
     }
 
-    p +
-        labs(x = xlabel, y = "Electrode", size = x.lab.size) +
-        scale_y_continuous(labels = elecNamesReversed, breaks = breakplot) +
-        theme(
-            axis.text.y = element_markdown(colour = elecColor)
+    ## Turn the data into long format for ggplot
+    plotData_long <- reshape(
+        plotData,
+        varying = elecNamesReversed,
+        v.names = "Signal",
+        timevar = "Electrode",
+        times = elecNamesReversed,
+        direction = "long"
         )
+    
+    plotData_long$Electrode <- factor(plotData_long$Electrode, levels = elecNamesReversed)
+
+    ggplot(
+        plotData_long, 
+        aes(x = timeTicks, y = Signal, group = Electrode)
+    ) +
+    geom_line(linewidth = 0.3, alpha = 0.9) + 
+    labs(x = xlabel, y = "Electrode", size = x.lab.size) +
+    scale_y_continuous(labels = ylabels, breaks = breakplot) +
+    theme(
+        axis.text.y = element_markdown(colour = elecColor)
+    ) -> p
+
+    p 
     }
 )
