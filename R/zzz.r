@@ -9,6 +9,7 @@
 #' @importFrom ggplot2 ggplot geom_line aes labs scale_y_continuous theme
 #' @importFrom ggtext element_markdown
 #' @importFrom gsignal resample
+#' @importFrom stats reshape
 #' @export nrow
 #' @export ncol
 #' @export rownames

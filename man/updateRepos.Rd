@@ -4,7 +4,7 @@
 \alias{updateRepos}
 \title{Update downloader repositories configuration}
 \usage{
-updateRepos(verbose = TRUE)
+updateRepos(verbose = FALSE)
 }
 \arguments{
 \item{verbose}{Logical indicating whether to show messages}

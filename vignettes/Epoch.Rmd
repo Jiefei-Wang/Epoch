@@ -25,21 +25,23 @@ The Epoch package provides tools for downloading, manipulating, and analyzing in
 
 # Creating an EpochDownloader
 
-The `EpochDownloader` class is your gateway to accessing iEEG data. You can create a downloader using either a project name or a direct OSF project ID. At the time of writting, the package supports `fragility` and `kData` projects from UTMB, both datasets are for the analysis of seizure onset prediction. The downloader can be created as follows:
+The `EpochDownloader` class is your gateway to accessing iEEG data. You can create a downloader using either a project name or a direct OSF project ID. We provide `fragility` and `kData` projects from UTMB as predefined projects for seizure onset prediction analysis. You can list all available projects via `EpochRepos()`.
+```{r list_projects}
+EpochRepos()
+```
+
+The `EpochRepos()` function returns a list of available projects, with name as the project name and value as the OSF project ID. `id` argument in `EpochDownloader()` accept either the project name or the OSF project ID. The default is `fragility` project if `id` is not specified.
+
 ```{r downloader_predefined}
-downloader <- EpochDownloader()
-
-# Equivalently:
-# downloader <- EpochDownloader(id = "fragility")
-
+downloader <- EpochDownloader(progress=FALSE)
 downloader
 ```
+
 
 # Exploring Available Data Files
 The downloader works like a list object in R. Once you have a downloader, you can explore what data files are available using `names()`
 ```{r explore_data}
-data_names <- names(downloader)
-data_names
+names(downloader)
 ```
 
 # Loading Data into Epoch Objects
@@ -50,7 +52,7 @@ Now you can load specific datasets into `Epoch` objects using `$`, `[[]]`, or `[
 
 ```{r load_single}
 # Load the first available dataset
-epoch_data <- downloader$Retrostudy_subpt01_1
+epoch_data <- downloader$FragilityData_subpt01_1
 
 epoch_data
 ```
@@ -58,8 +60,8 @@ epoch_data
 ## Loading Multiple Datasets
 
 ```{r load_multiple}
-# Load the first 3 datasets
-selected_data <- c("Retrostudy_subpt01_1", "Retrostudy_subpt01_2")
+# Load two datasets
+selected_data <- c("FragilityData_subpt01_1", "FragilityData_subpt01_2")
 epoch_list <- downloader[selected_data]
 
 epoch_list
@@ -149,6 +151,16 @@ However, it makes more sense to use the time range to subset the data. The `crop
 ```{r}
 crop(epoch, start = -0.5, end = 1.5)
 ```
+
+## Resampling Epoch Data
+You can resample the `Epoch` data to a different sampling rate using the `resample()` function. This is useful for aligning data from different sources or for reducing the data size.
+```{r resample_epoch}
+# Resample to 250 Hz
+resampled_epoch <- resample(epoch, samplingRate = 250)
+resampled_epoch
+```
+
+
 
 
 # Creating Custom Epoch Objects

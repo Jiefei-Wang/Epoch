@@ -33,7 +33,7 @@ get_config_data <- function() {
 #' @return No return value, called for side effects.
 #' @examples updateRepos(verbose = TRUE)
 #' @export
-updateRepos <- function(verbose = TRUE) {
+updateRepos <- function(verbose = FALSE) {
     .message(verbose, "Attempting to update project repository configuration...")
 
     config <- get_config_data()

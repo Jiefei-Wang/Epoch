@@ -98,7 +98,7 @@ setMethod("plot", signature(x = "Epoch", y = "missing"),
 
     ggplot(
         plotData_long, 
-        aes(x = timeTicks, y = Signal, group = Electrode)
+        aes(x = .data$timeTicks, y = .data$Signal, group = .data$Electrode)
     ) +
     geom_line(linewidth = 0.3, alpha = 0.9) + 
     labs(x = xlabel, y = "Electrode", size = x.lab.size) +
