@@ -24,7 +24,7 @@ test_that("tblData method for Epoch", {
   expect_equal(dim(tblData(dummy_epoch)), c(row_num, col_num))
 })
 
-test_that("crop method for Epoch", {
+test_that("crop method for Epoch with valid inputs", {
   # Times are accessed via colnames(tblData())
   original_times <- coltimes(dummy_epoch)
   cropped_epoch_time <- crop(dummy_epoch, start = 1, end = 5)
@@ -34,6 +34,75 @@ test_that("crop method for Epoch", {
   expect_true(all(cropped_times <= 5))
   expect_lt(ncol(tblData(cropped_epoch_time)), ncol(tblData(dummy_epoch)))
 })
+
+
+test_that("crop() returns full Epoch when range matches full extent", {
+  times <- coltimes(dummy_epoch)
+  e <- crop(dummy_epoch, start = min(times), end = max(times))
+  expect_equal(dim(e), dim(dummy_epoch))
+})
+
+test_that("crop() gives error when start or end is not numeric", {
+  expect_error(
+    e <- crop(dummy_epoch, start = 'a', end = 0.2),
+    regexp = "must be numeric"
+  )
+  expect_error(
+    e <- crop(dummy_epoch, start = 0.1, end = '0.2'),
+    regexp = "must be numeric"
+  )
+})
+
+test_that("crop() gives warning when start or end is out of range", {
+  expect_warning(
+    e <- crop(dummy_epoch, start = -1, end = 0.2),
+    regexp = "outside the available time range"
+  )
+  expect_s4_class(e, "Epoch")
+})
+
+test_that("crop() returns empty Epoch and warns when no time points match", {
+  warnings <- character()
+  
+  withCallingHandlers(
+    {
+      e <- crop(dummy_epoch, start = 500, end = 600)
+    },
+    warning = function(w) {
+      warnings <<- c(warnings, conditionMessage(w))
+      invokeRestart("muffleWarning")
+    }
+  )
+  
+  expect_length(warnings, 2)
+  expect_true(any(grepl("No time points found", warnings)))
+  expect_true(any(grepl("outside the available time range", warnings)))
+  expect_equal(ncol(e), 0)
+})
+
+test_that("crop() with check_time_range = FALSE returns silently", {
+  e <- crop(dummy_epoch, start = -1, end = 0.2, check_time_range = FALSE)
+  expect_s4_class(e, "Epoch")
+})
+
+test_that("crop() throws error for start > end when check_time_range = TRUE", {
+  warnings <- character()
+  
+  withCallingHandlers(
+    {
+      e <- crop(dummy_epoch, start = 0.6, end = 0.2)
+    },
+    warning = function(w) {
+      warnings <<- c(warnings, conditionMessage(w))
+      invokeRestart("muffleWarning")
+    }
+  )
+  
+  expect_length(warnings, 2)
+  expect_true(any(grepl("No time points found", warnings)))
+  expect_true(any(grepl("`start` is greater than `end`", warnings)))
+})
+
 
 test_that("plot method for Epoch", {
   # Check if plot returns a ggplot object without errors
@@ -82,7 +151,6 @@ test_that("Epoch subsetting with invalid values", {
   expect_error(dummy_epoch[, "nonexistent_time"], regexp = "subscript out of bounds")
 
 })
-
 
 test_that("logical subsetting recycles by default", {
   subset <- dummy_epoch[c(TRUE, FALSE), ]
