@@ -140,14 +140,44 @@ Epoch <- function(
 #' @return clip: clip the time range of the Epoch object
 #' @rdname Epoch-method
 #' @export
-setGeneric("crop", function(x, start, end) standardGeneric("crop"))
+setGeneric("crop", function(x, start, end, ...) standardGeneric("crop"))
 
 #' @rdname Epoch-method
 #' @export
-setMethod("crop", "Epoch", function(x, start, end) {
-    times <- coltimes(x)
-    indices <- which(times >= start & times <= end)
-    x[, indices] 
+setMethod("crop", "Epoch", function(x, start, end, check_time_range = TRUE) {
+  times <- coltimes(x)
+  
+  if (check_time_range) {
+    # Check 1: type validation
+    if (!is.numeric(start) || !is.numeric(end)) {
+      stop("crop function: `start` and `end` must be numeric.")
+    }
+    
+    # Check 2: empty times
+    if (length(times) == 0) {
+      warning("crop function: The Epoch object has no time information.")
+    }
+    
+    # Check 3: logic error
+    if (start > end) {
+      warning("crop function: `start` is greater than `end`. Empty Epoch is returned.")
+    }
+    
+    # Check 4: out-of-bounds time range
+    if (start < min(times) || end > max(times)) {
+      warning(glue::glue(
+        "crop function: `start` or `end` is outside the available time range [{min(times)}, {max(times)}]."
+      ))
+    }
+  }
+  
+  indices <- which(times >= start & times <= end)
+  
+  if (length(indices) == 0) {
+    warning("crop function: No time points found in the specified range. Returning an empty Epoch object.")
+  }
+  
+  x[, indices]
 })
 
 
