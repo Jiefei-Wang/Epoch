@@ -58,6 +58,8 @@ download_to_tmp_folder <- function(x, file_names) {
 #' @slot dataNames The names of the files in the OSF project.
 #' @slot tmp_folder The temporary folder where the files are downloaded.
 #' @slot progress Logical indicating whether to show progress during download.
+#' 
+#' @family Epoch downloader
 .EpochDownloader <- setClass("EpochDownloader",
     slots = list(
         id = "character",
@@ -79,7 +81,32 @@ download_to_tmp_folder <- function(x, file_names) {
 #' @param progress Logical indicating whether to show progress during download.
 #' @param verbose Logical indicating whether to show messages
 #' 
-#' @return An `EpochDownloader` object.
+#' @return `EpochDownloader`: An `EpochDownloader` object.
+#' @rdname EpochDownloader-method
+#' @examples 
+#' # list all available projects
+#' EpochRepos()
+#' 
+#' # downloader for the fragility data
+#' dl <- EpochDownloader(id = "fragility")
+#' 
+#' # list all Epoch objects in the downloader
+#' names(dl)
+#' 
+#' # download the first Epoch object
+#' \dontrun{
+#'  dl[1]
+#'  # equivalent to (index by name)
+#'  dl[names(dl)[1]]
+#' }
+#' 
+#' # download the multiple Epoch objects
+#' \dontrun{
+#'  dl[c(1, 2)]
+#'  # equivalent to (index by name)
+#'  dl[names(dl)[c(1, 2)]]
+#' }
+#' 
 #' @export 
 EpochDownloader <- function(id = NULL,
     progress = TRUE,

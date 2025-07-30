@@ -80,12 +80,12 @@ test_that("crop() returns empty Epoch and warns when no time points match", {
   expect_equal(ncol(e), 0)
 })
 
-test_that("crop() with check_time_range = FALSE returns silently", {
-  e <- crop(dummy_epoch, start = -1, end = 0.2, check_time_range = FALSE)
+test_that("crop() with checkTimeRange = FALSE returns silently", {
+  e <- crop(dummy_epoch, start = -1, end = 0.2, checkTimeRange = FALSE)
   expect_s4_class(e, "Epoch")
 })
 
-test_that("crop() throws error for start > end when check_time_range = TRUE", {
+test_that("crop() throws error for start > end when checkTimeRange = TRUE", {
   warnings <- character()
   
   withCallingHandlers(

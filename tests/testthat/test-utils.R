@@ -1,9 +1,4 @@
-
-library(here)
-source(here("R", "utils.r"))
-
 library(testthat)
-library(glue)
 
 # ---- tryToNum ----
 test_that("tryToNum converts valid input", {

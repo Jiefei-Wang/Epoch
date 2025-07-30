@@ -17,7 +17,20 @@ setGeneric("resample", function(x, ...) standardGeneric("resample"))
 #' 
 #' @return An `Epoch` object with the resampled data.
 #' 
+#' @examples 
+#' # Create an Epoch object
+#' epoch_data <- matrix(rnorm(1000), nrow = 10)
+#' rownames(epoch_data) <- paste0("Electrode_", 1:10)
+#' epoch <- Epoch(epoch_data, startTime = 0, samplingRate = 100)
+#' 
+#' # downsample the epoch to 50 Hz
+#' resample(epoch, samplingRate = 50)
+#' 
+#' # upsample the epoch to 200 Hz
+#' resample(epoch, samplingRate = 200)
+#' 
 #' @rdname resample-Epoch-method
+#' @family Epoch methods
 #' @export 
 setMethod("resample", "Epoch", function(x, samplingRate, ...) {
     oldSamplingRate <- .samplingRate(x)
