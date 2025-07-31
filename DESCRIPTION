@@ -1,6 +1,6 @@
 Package: Epoch
 Title: A Data Package for iEEG Epoch Data
-Version: 0.0.0.9000
+Version: 1.0.0
 Authors@R: 
     person("Jiefei", "Wang", , "szwjf08@gmail.com", role = c("aut", "cre"))
 Description: This package provides tools for working with iEEG epoch data, including downloading, processing, and visualizing the data.

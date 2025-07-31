@@ -3,7 +3,7 @@
 
 # Epoch: Epileptogenic Zone Localization Based on neural Fragility EEG marker
 
-[![](https://img.shields.io/badge/devel%20version-0.99.0-blue.svg)](https://github.com/Jiefei-Wang/Epoch)
+[![](https://img.shields.io/badge/devel%20version-1.0.0-blue.svg)](https://github.com/Jiefei-Wang/Epoch)
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![](https://img.shields.io/github/languages/code-size/Jiefei-Wang/Epoch.svg)](https://github.com/Jiefei-Wang/Epoch)
 [![](https://img.shields.io/github/last-commit/Jiefei-Wang/Epoch.svg)](https://github.com/Jiefei-Wang/Epoch/commits/main)
@@ -12,11 +12,6 @@
 
 
 ## Install Package
-This package depends on `TableContainer` package, which is not available on CRAN. You can install it from GitHub using the following command:
-```{r}
-remotes::install_github("Jiefei-Wang/TableContainer")
-```
-
 To install this package, run
 ```{r}
 remotes::install_github("Jiefei-Wang/Epoch")
@@ -29,9 +24,9 @@ This package provides a downloader for downloading example data
 dl <- EpochDownloader()
 ```
 
-Use `$` to get a single file, or `[[` to get a list of files
+Use `$` or `[[` to get a single file, or `[` to get a list of files
 ```{r}
-epoch <- dl$Retrostudy_subpt2_1
+epoch <- dl[[1]]
 ```
 
 The downloader does not create a permanent copy of the data, so you must save the Epoch object if you want to use it later
@@ -55,3 +50,6 @@ You can also use `crop` to crop the data by time (in seconds)
 ```{r}
 crop(epoch, from = -10, to = 10)
 ```
+
+For more information, see the package vignette.
+
