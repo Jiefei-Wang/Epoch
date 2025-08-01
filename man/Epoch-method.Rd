@@ -13,9 +13,9 @@
 \alias{[,Epoch-method}
 \title{Methods for Epoch class}
 \usage{
-crop(x, start, end)
+crop(x, start, end, ...)
 
-\S4method{crop}{Epoch}(x, start, end)
+\S4method{crop}{Epoch}(x, start, end, check_time_range = TRUE)
 
 coltimes(x)
 
@@ -47,6 +47,10 @@ coltimes(x)
 
 \item{end}{Numeric value specifying end of new time range}
 
+\item{...}{Additional arguments.}
+
+\item{check_time_range}{Logical. Whether to check if the time range is valid.}
+
 \item{y}{Not used (for S4 method compatibility)}
 
 \item{gaps}{Numeric value specifying the gap between electrode traces (default: 2)}
@@ -58,8 +62,6 @@ coltimes(x)
 \item{maxLabels}{Maximum number of electrode labels to display on the y-axis (default: 50)}
 
 \item{x.lab.size}{Size of the x-axis label text (default: 2)}
-
-\item{...}{Additional arguments.}
 
 \item{object}{Epoch object}
 

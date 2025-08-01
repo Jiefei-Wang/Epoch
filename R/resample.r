@@ -20,6 +20,11 @@ setGeneric("resample", function(x, ...) standardGeneric("resample"))
 #' @rdname resample-Epoch-method
 #' @export 
 setMethod("resample", "Epoch", function(x, samplingRate, ...) {
+  
+    if (!is.numeric(samplingRate) || samplingRate <= 0) {
+      stop("samplingRate must be a positive numeric value.")
+    }
+  
     oldSamplingRate <- .samplingRate(x)
     electrodes <- rownames(x)
     timeRange <- range(coltimes(x))

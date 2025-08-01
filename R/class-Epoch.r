@@ -61,7 +61,7 @@ Epoch <- function(
         times <- startTime + seq(0, ncol(table) - 1) / samplingRate
     }else{
         # If times is provided, we need to estimate samplingRate
-        estSamplingRate <- length(times) / (times[length(times)] - times[1])
+        estSamplingRate <- (length(times) -1)/ (times[length(times)] - times[1])
         if (is.null(samplingRate)){
             samplingRate <- estSamplingRate
         } else {
@@ -137,6 +137,8 @@ Epoch <- function(
 #' @param x An Epoch object
 #' @param start Numeric value specifying start of new time range
 #' @param end Numeric value specifying end of new time range
+#' @param check_time_range Logical. Whether to check if the time range is valid.
+
 #' @return clip: clip the time range of the Epoch object
 #' @rdname Epoch-method
 #' @export

@@ -5,3 +5,10 @@ scripts/
 ^\.httr-oauth$
 ^\.github$
 ^LICENSE\.md$
+^\.DS_Store$
+^.*\.tmp$
+^.*\.Rproj$
+^README\.html$
+^docs$
+^tests/testthat/_snaps$
+
