@@ -30,8 +30,8 @@ get_config_data <- function() {
 #' will remain unchanged.
 #' 
 #' @param verbose Logical indicating whether to show messages
-#' @return No return value, called for side effects.
-#' @examples updateRepos(verbose = TRUE)
+#' @return `updateRepos`: No return value, called for side effects.
+#' @rdname EpochDownloader-method
 #' @export
 updateRepos <- function(verbose = FALSE) {
     .message(verbose, "Attempting to update project repository configuration...")
@@ -49,9 +49,9 @@ updateRepos <- function(verbose = FALSE) {
 #' This function returns the list of available projects.
 #' If the configuration has not been fetched yet, it will
 #' automatically update the project list from the remote repository.
-#' @inheritParams updateRepos
-#' @return A list of project names and their corresponding OSF project IDs.
+#' @return `EpochRepos`: A list of project names and their corresponding OSF project IDs.
 #' @examples EpochRepos()
+#' @rdname EpochDownloader-method
 #' @export
 EpochRepos <- function(verbose = TRUE) {
     if (!pkg_global$.config_fetched) {

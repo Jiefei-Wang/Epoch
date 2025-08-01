@@ -38,16 +38,16 @@ setClassUnion("data.frameOrNULL", c("data.frame", "NULL"))
 #' @param colData Optional data frame containing metadata for columns (time points).
 #' @param metaData Optional list containing metadata for the Epoch object. Element name "SamplingRate" is reserved by the Epoch class.
 #' @return An Epoch object
-#' 
+#'
 #' @examples
 #' epoch_data <- matrix(rnorm(1000), nrow = 10)
 #' rownames(epoch_data) <- paste0("Electrode_", 1:10)
 #' epoch <- Epoch(epoch_data, startTime = 0, samplingRate = 100)
-#' 
-#' @export 
+#'
+#' @export
 Epoch <- function(
     table,
-    electrodes = NULL, times = NULL, 
+    electrodes = NULL, times = NULL,
     startTime = NULL, samplingRate = NULL,
     rowData = NULL, colData = NULL, metaData = NULL) {
     if (!xor(is.null(times), is.null(startTime))) {
@@ -59,7 +59,7 @@ Epoch <- function(
             stop("If 'startTime' is provided, 'samplingRate' must also be provided")
         }
         times <- startTime + seq(0, ncol(table) - 1) / samplingRate
-    }else{
+    } else {
         # If times is provided, we need to estimate samplingRate
         estSamplingRate <- (length(times) -1)/ (times[length(times)] - times[1])
         if (is.null(samplingRate)){
@@ -131,55 +131,66 @@ Epoch <- function(
 ## other Methods
 ###############################
 #' Methods for Epoch class
-#' 
+#'
 #' @description `clip`: Truncating time range
 #'
 #' @param x An Epoch object
 #' @param start Numeric value specifying start of new time range
 #' @param end Numeric value specifying end of new time range
-#' @param check_time_range Logical. Whether to check if the time range is valid.
+#' @param checkTimeRange Logical. Whether to check if the time range is valid.
 
 #' @return clip: clip the time range of the Epoch object
 #' @rdname Epoch-method
+#' 
+#' @examples 
+#' # Create an Epoch object
+#' epoch_data <- matrix(rnorm(1000), nrow = 10)
+#' rownames(epoch_data) <- paste0("Electrode_", 1:10)
+#' epoch <- Epoch(epoch_data, startTime = 0, samplingRate = 100)
+#' 
+#' # crop the epoch
+#' crop(epoch, start = 0.5, end = 1.5)
+#' 
+#' @family Epoch methods
 #' @export
 setGeneric("crop", function(x, start, end, ...) standardGeneric("crop"))
 
 #' @rdname Epoch-method
+#' @param checkTimeRange Logical, whether to check the validity of the time range. This includes checking if the time range is empty, if `start` is greater than `end`, and if `start` or `end` are out of bounds. Default is TRUE.
 #' @export
-setMethod("crop", "Epoch", function(x, start, end, check_time_range = TRUE) {
-  times <- coltimes(x)
-  
-  if (check_time_range) {
+setMethod("crop", "Epoch", function(x, start, end, checkTimeRange = TRUE) {
+    times <- coltimes(x)
     # Check 1: type validation
     if (!is.numeric(start) || !is.numeric(end)) {
-      stop("crop function: `start` and `end` must be numeric.")
+        stop("crop function: `start` and `end` must be numeric.")
     }
-    
-    # Check 2: empty times
-    if (length(times) == 0) {
-      warning("crop function: The Epoch object has no time information.")
+
+    if (checkTimeRange) {
+        # Check 2: empty times
+        if (length(times) == 0) {
+            warning("crop function: The Epoch object has no time information.")
+        }
+
+        # Check 3: logic error
+        if (start > end) {
+            warning("crop function: `start` is greater than `end`. Empty Epoch is returned.")
+        }
+
+        # Check 4: out-of-bounds time range
+        if (start < min(times) || end > max(times)) {
+            warning(glue::glue(
+                "crop function: `start` or `end` is outside the available time range [{min(times)}, {max(times)}]."
+            ))
+        }
     }
-    
-    # Check 3: logic error
-    if (start > end) {
-      warning("crop function: `start` is greater than `end`. Empty Epoch is returned.")
+
+    indices <- which(times >= start & times <= end)
+
+    if (length(indices) == 0) {
+        warning("crop function: No time points found in the specified range. Returning an empty Epoch object.")
     }
-    
-    # Check 4: out-of-bounds time range
-    if (start < min(times) || end > max(times)) {
-      warning(glue::glue(
-        "crop function: `start` or `end` is outside the available time range [{min(times)}, {max(times)}]."
-      ))
-    }
-  }
-  
-  indices <- which(times >= start & times <= end)
-  
-  if (length(indices) == 0) {
-    warning("crop function: No time points found in the specified range. Returning an empty Epoch object.")
-  }
-  
-  x[, indices]
+
+    x[, indices]
 })
 
 
@@ -189,6 +200,10 @@ setMethod("crop", "Epoch", function(x, start, end, check_time_range = TRUE) {
 setGeneric("coltimes", function(x) standardGeneric("coltimes"))
 
 #' @rdname Epoch-method
+#' @examples 
+#' # get the time points of an Epoch object
+#' coltimes(epoch)
+#' 
 #' @export
 setMethod("coltimes", "Epoch", function(x) {
     tms <- .times(x)
@@ -197,4 +212,3 @@ setMethod("coltimes", "Epoch", function(x) {
     }
     tms
 })
-

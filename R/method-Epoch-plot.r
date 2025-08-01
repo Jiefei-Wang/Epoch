@@ -8,10 +8,10 @@
 #' @param maxLabels Maximum number of electrode labels to display on the y-axis (default: 50)
 #' @param x.lab.size Size of the x-axis label text (default: 2)
 #' @param ... Additional arguments (not currently used)
-#' @return A ggplot object showing iEEG electrode traces
+#' @return `plot`: A ggplot object showing iEEG electrode traces
 #'
 #' @examples
-#' # Create an Epoch object from sample data
+#' # Create an Epoch object
 #' epoch_data <- matrix(rnorm(1000), nrow = 10)
 #' rownames(epoch_data) <- paste0("Electrode_", 1:10)
 #' epoch <- Epoch(epoch_data, startTime = 0, samplingRate = 100)
@@ -19,7 +19,8 @@
 #' # Plot the epoch
 #' plot(epoch)
 #' 
-#' @rdname Epoch-method
+#' 
+#' @family Epoch methods
 #' @export
 setMethod("plot", signature(x = "Epoch", y = "missing"), 
     function(x, y, gaps = 2, 

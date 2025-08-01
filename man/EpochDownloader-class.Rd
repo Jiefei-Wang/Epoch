@@ -23,3 +23,4 @@ downloading and accessing files from a OSF project.
 \item{\code{progress}}{Logical indicating whether to show progress during download.}
 }}
 
+\concept{Epoch downloader}

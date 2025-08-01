@@ -24,3 +24,22 @@ This function allows you to resample an object to a different sampling frequency
 
 This function allows you to resample an Epoch object to a different sampling frequency.
 }
+\examples{
+# Create an Epoch object
+epoch_data <- matrix(rnorm(1000), nrow = 10)
+rownames(epoch_data) <- paste0("Electrode_", 1:10)
+epoch <- Epoch(epoch_data, startTime = 0, samplingRate = 100)
+
+# downsample the epoch to 50 Hz
+resample(epoch, samplingRate = 50)
+
+# upsample the epoch to 200 Hz
+resample(epoch, samplingRate = 200)
+
+}
+\seealso{
+Other Epoch methods: 
+\code{\link{crop}()},
+\code{\link{plot,Epoch,missing-method}}
+}
+\concept{Epoch methods}
