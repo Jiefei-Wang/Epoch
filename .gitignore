@@ -69,3 +69,20 @@ README.html
 
 cecile/
 inst/doc
+
+# Testing
+/tests/testthat/_snaps/
+
+# OS Temp / System files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.tmp
+
+# Quarto output 
+*.qmd
+*_files/
+*.pdf
+*.html
+*.docx
+
