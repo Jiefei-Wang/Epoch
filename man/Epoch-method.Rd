@@ -46,8 +46,6 @@ coltimes(x)
 \item{j}{Column indices for subsetting.}
 
 \item{drop}{Not used.}
-
-\item{check_time_range}{Logical. Whether to check if the time range is valid.}
 }
 \value{
 clip: clip the time range of the Epoch object
