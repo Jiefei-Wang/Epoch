@@ -1,4 +1,3 @@
-library(testthat)
 
 # ---- tryToNum ----
 test_that("tryToNum converts valid input", {

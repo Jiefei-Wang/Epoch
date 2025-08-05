@@ -1,6 +1,3 @@
-library(testthat)
-library(Epoch)
-
 # Create a dummy Epoch object for testing
 row_num <- 10
 col_num <- 100

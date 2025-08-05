@@ -1,6 +1,3 @@
-library(testthat)
-library(gsignal)  # required for resample()
-library(Epoch)
 
 test_that("Epoch resampling works as expected", {
   set.seed(42)
