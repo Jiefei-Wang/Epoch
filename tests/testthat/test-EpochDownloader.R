@@ -1,6 +1,3 @@
-library(testthat)
-library(Epoch) # Assuming your package name is Epoch
-
 # This test will try to download actual data, ensure network connectivity
 # and that the downloader is configured correctly.
 

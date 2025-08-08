@@ -7,7 +7,7 @@
 \S4method{plot}{Epoch,missing}(
   x,
   y,
-  gaps = 2,
+  gap = 2,
   groupIndex = NULL,
   timeResolution = 2048,
   maxLabels = 50,
@@ -20,7 +20,7 @@
 
 \item{y}{Not used (for S4 method compatibility)}
 
-\item{gaps}{Numeric value specifying the gap between electrode traces (default: 2)}
+\item{gap}{Numeric value specifying the gap between electrode traces (default: 2)}
 
 \item{groupIndex}{Integer or string. A group of electrodes to show together in a different color. If NULL(default), all electrodes are shown in the same color.}
 

@@ -2,7 +2,7 @@
 #'
 #' @param x An Epoch object
 #' @param y Not used (for S4 method compatibility)
-#' @param gaps Numeric value specifying the gap between electrode traces (default: 2)
+#' @param gap Numeric value specifying the gap between electrode traces (default: 2)
 #' @param groupIndex Integer or string. A group of electrodes to show together in a different color. If NULL(default), all electrodes are shown in the same color. 
 #' @param timeResolution Maximum number of time points to keep for each electrode (default: 2048)
 #' @param maxLabels Maximum number of electrode labels to display on the y-axis (default: 50)
@@ -23,7 +23,7 @@
 #' @family Epoch methods
 #' @export
 setMethod("plot", signature(x = "Epoch", y = "missing"), 
-    function(x, y, gaps = 2, 
+    function(x, y, gap = 2, 
     groupIndex = NULL, timeResolution = 2048, 
     maxLabels = 50, x.lab.size = 2,  ...) {
     elecNames <- rownames(x)
@@ -68,12 +68,12 @@ setMethod("plot", signature(x = "Epoch", y = "missing"),
     plotData <- as.data.frame(plotData)
     plotData$timeTicks <- timeTicks
 
-    # Add gaps between electrodes for visual separation
-    breakplot <- (seq_len(elecNum) - 1) * gaps
+    # Add gap between electrodes for visual separation
+    breakplot <- (seq_len(elecNum) - 1) * gap
     elecNamesReversed <- rev(elecNames)
     for (i in seq_along(elecNamesReversed)) {
         elec <- elecNamesReversed[i]
-        plotData[[elec]] <- plotData[[elec]] + (i-1) * gaps
+        plotData[[elec]] <- plotData[[elec]] + (i-1) * gap
     }
 
     
