@@ -111,7 +111,7 @@ download_to_tmp_folder <- function(x, file_names) {
 EpochDownloader <- function(id = NULL,
     progress = TRUE,
     verbose = FALSE,
-    path = file.path(tempdir(), id)) {
+    path = NULL) {
 
     # Handle id parameter
     if (length(id) > 1) {
@@ -130,12 +130,31 @@ EpochDownloader <- function(id = NULL,
         }
     }
     
+    files <- tryCatch({
+        osf_retrieve_node(id) |>
+          osf_ls_files(n_max = Inf)
+      },
+      error = function(e) {
+        if (grepl("404", e$message)) {
+          stop("The ID does not exist or you do not have permission to access it.", call. = FALSE)
+        } else if (grepl("Detected invalid OSF identifiers", e$message)) {
+          stop("Invalid OSF ID format.", call. = FALSE)
+        } else {
+          stop(e)  # re-throw other errors
+        }
+      })
     
-    files <- osf_retrieve_node(id) |>
-        osf_ls_files(n_max = Inf)
+      
+    # Only select .rds files
+    rds_files <- files[grep("\\.rds$", files$name, ignore.case = TRUE), , drop = FALSE]
+    
     ## remove .rds extension from name column
-    dataNames <- gsub("\\.rds$", "", files$name)
+    dataNames <- gsub("\\.rds$", "", rds_files$name, ignore.case = TRUE)
 
+    ## get path
+    if (is.null(path)) {
+      path <- file.path(tempdir(), id)
+    }
     ## create the tmp folder if it does not exist
     if (!dir.exists(path)) {
         dir.create(path)
@@ -143,7 +162,7 @@ EpochDownloader <- function(id = NULL,
 
     .EpochDownloader(
         id = id,
-        files = files,
+        files = rds_files,
         dataNames = dataNames,
         tmp_folder = path,
         progress = progress
@@ -181,6 +200,10 @@ setMethod(
                 stop(paste("Index out of bounds. The maximum index is", length(x@dataNames)))
             }
             i <- x@dataNames[i]
+        } else if (is.character(i)) {
+          # pass
+        } else {
+          stop("Index must be integer positions or character names.", call. = FALSE)
         }
 
         dataNames <- x@dataNames
@@ -222,6 +245,7 @@ setMethod(
 setMethod(
     "[[", "EpochDownloader",
     function(x, i) {
+        if (length(i) != 1L) stop("`[[` expects a single index or name.", call. = FALSE)
         x[i][[1]]
     }
 )
