@@ -238,3 +238,91 @@ test_that("[[ enforces length 1", {
   expect_silent(downloader[['FragilityData_subpt2_3']])
 })
 
+test_that("load_single_file() error handler", {
+  tf <- tempfile(fileext = ".rds")
+  writeLines("not an RDS", tf)
+  expect_error(load_single_file(tf), "Error loading file")
+  expect_false(file.exists(tf))  # deletion path covered
+})
+
+test_that("EpochDownloader uses only the first element of id vector (nickname mapping)", {
+  # Mock dependencies to avoid network
+  fake_files <- data.frame(name = "a.rds", stringsAsFactors = FALSE)
+  
+  with_mocked_bindings(
+    EpochRepos = function(verbose = FALSE) {
+      # map nicknames (case-insensitive in constructor)
+      list(fragility = "osf123", other = "osf456")
+    },
+    osf_retrieve_node = function(id) {
+      # should be called with the mapped ID of the FIRST element only
+      expect_equal(id, "osf123")
+      structure(list(id = id), class = "osf_node")
+    },
+    osf_ls_files = function(node, n_max = Inf) fake_files,
+    {
+      dl <- EpochDownloader(
+        id = c("Fragility", "Other"),   # length > 1; second must be ignored
+        progress = FALSE,
+        verbose  = FALSE,
+        path     = tempdir()
+      )
+      
+      expect_s4_class(dl, "EpochDownloader")
+      expect_equal(dl@id, "osf123")     # stored canonical id
+      expect_equal(names(dl), "a")      # .rds -> name without extension
+    })
+})
+
+
+test_that("EpochDownloader uses first element of raw ID vector (no nickname match)", {
+  fake_files <- data.frame(name = "a.rds", stringsAsFactors = FALSE)
+  
+  with_mocked_bindings(
+    EpochRepos = function(verbose = FALSE) list(),  # no nicknames available
+    osf_retrieve_node = function(id) {
+      # constructor lowercases; must call with the first raw id only
+      expect_equal(id, "osf_first")
+      structure(list(id = id), class = "osf_node")
+    },
+    osf_ls_files = function(node, n_max = Inf) fake_files,
+    {
+      dl <- EpochDownloader(
+        id = c("OSF_FIRST", "OSF_SECOND"),
+        progress = FALSE,
+        verbose  = FALSE,
+        path     = tempdir()
+      )
+      
+      expect_s4_class(dl, "EpochDownloader")
+      expect_equal(dl@id, "osf_first")  # first element, lowercased
+    })
+})
+
+test_that("[ rejects non-numeric/non-character indices with a clear error", {
+
+  # Logical index -> not allowed by our S4 method (triggers the else branch)
+  expect_error(
+    downloader[TRUE],
+    regexp = "Index must be integer positions or character names\\."
+  )
+  
+  # Factor index -> also neither numeric nor character
+  expect_error(
+    downloader[factor("a")],
+    regexp = "Index must be integer positions or character names\\."
+  )
+  
+  # NULL index -> neither numeric nor character
+  expect_error(
+    downloader[NULL],
+    regexp = "Index must be integer positions or character names\\."
+  )
+  
+  # List index -> neither numeric nor character
+  expect_error(
+    downloader[list(1)],
+    regexp = "Index must be integer positions or character names\\."
+  )
+})
+

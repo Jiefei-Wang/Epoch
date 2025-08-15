@@ -86,3 +86,16 @@ Desktop.ini
 *.html
 *.docx
 
+# Coverage reports (local/CI artifacts you don’t want in git)
+coverage.html
+coverage.xml
+cobertura.xml
+lcov.info
+coverage/
+covr/
+# (keep .covrignore tracked if you use one)
+
+# Compiled code (if you ever add src/)
+src/*.o
+src/*.so
+src/*.dll

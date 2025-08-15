@@ -11,4 +11,10 @@ scripts/
 ^README\.html$
 ^docs$
 ^tests/testthat/_snaps$
-
+^codecov\.yml$
+^coverage\.xml$
+^coverage\.html$
+^lcov\.info$
+^covr$                  # any covr output dir
+^\.gitignore$
+^\.gitattributes$
