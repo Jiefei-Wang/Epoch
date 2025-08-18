@@ -166,3 +166,18 @@ test_that("subsetting with -999 returns full object (nothing dropped)", {
   expect_equal(dim(subset), dim(dummy_epoch))
 })
 
+test_that("dimnames(Epoch) forwards to the base method", {
+  # Exact match to the source matrix's dimnames
+  #expect_identical(dimnames(dummy_epoch), dimnames(dummy_data))
+  
+  # Also check row/col names individually (clearer failure messages)
+  expect_identical(rownames(dummy_epoch), rownames(dummy_data))
+  expect_length(colnames(dummy_epoch), ncol(dummy_data))
+  
+  # Basic structure checks
+  dn <- dimnames(dummy_epoch)
+  expect_type(dn, "list")
+  expect_length(dn, 2L)
+  expect_true(is.null(dn[[1]]) || is.character(dn[[1]]))
+  expect_true(is.null(dn[[2]]) || is.character(dn[[2]]))
+})

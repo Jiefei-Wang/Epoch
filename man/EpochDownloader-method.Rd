@@ -12,12 +12,7 @@
 \alias{EpochRepos}
 \title{EpochDownloader constructor}
 \usage{
-EpochDownloader(
-  id = NULL,
-  progress = TRUE,
-  verbose = FALSE,
-  path = file.path(tempdir(), id)
-)
+EpochDownloader(id = NULL, progress = TRUE, verbose = FALSE, path = NULL)
 
 \S4method{names}{EpochDownloader}(x)
 
