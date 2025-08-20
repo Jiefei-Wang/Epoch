@@ -267,9 +267,10 @@ setMethod(
             cat(glue("...({length(object) - n_show} more)"))
         }
         cat("\n")
-        cat("Use $, [, or [[ to access the Epoch Data\n") 
+        cat("Use $, [, or [[ to access the Epoch Data; Use wiki() to open the project wiki in your browser\n")
     }
 )
+
 
 #' @return `length`: Returns the number of files in the `EpochDownloader` object.
 #' @rdname EpochDownloader-method
@@ -278,5 +279,29 @@ setMethod(
     "length", "EpochDownloader",
     function(x) {
         length(x@dataNames)
+    }
+)
+
+#' @rdname EpochDownloader-method
+#' @export
+setGeneric("wiki", function(x, ...) standardGeneric("wiki"))
+
+#' @param x An `EpochDownloader` object.
+#' @param ... Not used, for future extensibility
+#' @return `wiki`: Opens the wiki page in the default browser
+#' @rdname EpochDownloader-method
+#' @export
+setMethod(
+    "wiki", "EpochDownloader",
+    function(x) {
+        wiki_name <- "home"
+        # Construct the URL for the wiki page
+        wiki_url <- paste0("https://osf.io/", x@id, "/wiki/", wiki_name, "/")
+        
+        # Open the URL in the default browser
+        utils::browseURL(wiki_url)
+        
+        # Return the URL for reference
+        invisible(wiki_url)
     }
 )

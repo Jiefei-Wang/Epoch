@@ -8,6 +8,8 @@
 \alias{[[,EpochDownloader-method}
 \alias{show,EpochDownloader-method}
 \alias{length,EpochDownloader-method}
+\alias{wiki}
+\alias{wiki,EpochDownloader-method}
 \alias{updateRepos}
 \alias{EpochRepos}
 \title{EpochDownloader constructor}
@@ -25,6 +27,10 @@ EpochDownloader(id = NULL, progress = TRUE, verbose = FALSE, path = NULL)
 \S4method{show}{EpochDownloader}(object)
 
 \S4method{length}{EpochDownloader}(x)
+
+wiki(x, ...)
+
+\S4method{wiki}{EpochDownloader}(x)
 
 updateRepos(verbose = FALSE)
 
@@ -46,6 +52,8 @@ EpochRepos(verbose = TRUE)
 \item{name}{The name of the file to be accessed.}
 
 \item{object}{An \code{EpochDownloader} object.}
+
+\item{...}{Not used, for future extensibility}
 }
 \value{
 \code{EpochDownloader}: An \code{EpochDownloader} object.
@@ -61,6 +69,8 @@ EpochRepos(verbose = TRUE)
 \code{show}: Prints a summary of the \code{EpochDownloader} object.
 
 \code{length}: Returns the number of files in the \code{EpochDownloader} object.
+
+\code{wiki}: Opens the wiki page in the default browser
 
 \code{updateRepos}: No return value, called for side effects.
 

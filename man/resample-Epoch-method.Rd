@@ -39,7 +39,9 @@ resample(epoch, samplingRate = 200)
 }
 \seealso{
 Other Epoch methods: 
+\code{\link{coltimes}()},
 \code{\link{crop}()},
-\code{\link{plot,Epoch,missing-method}}
+\code{\link{plot,Epoch,missing-method}},
+\code{\link{show,Epoch-method}}
 }
 \concept{Epoch methods}
