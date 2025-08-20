@@ -95,6 +95,9 @@ Epoch <- function(
 
     # set the electrodes of the table
     if (!is.null(electrodes)) {
+      if (!is.character(electrodes) || length(electrodes) != nrow(table)) {
+        stop("`electrodes` must be a character vector of length nrow(table).", call. = FALSE)
+      }
         rownames(table) <- electrodes
     }
 
@@ -208,7 +211,7 @@ setGeneric("coltimes", function(x) standardGeneric("coltimes"))
 setMethod("coltimes", "Epoch", function(x) {
     tms <- .times(x)
     if (!length(tms)) {
-        tms <- seq(1, ncol(x))
+        tms <- seq_len(ncol(x))
     }
     tms
 })
