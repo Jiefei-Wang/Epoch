@@ -1,6 +1,8 @@
 
+#' Print the Epoch Object
+#' 
+#' @family Epoch methods
 #' @param object Epoch object
-#' @rdname Epoch-method
 #' @export
 setMethod("show", "Epoch", 
     function(object) {

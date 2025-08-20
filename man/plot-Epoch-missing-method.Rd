@@ -51,7 +51,9 @@ plot(epoch)
 }
 \seealso{
 Other Epoch methods: 
+\code{\link{coltimes}()},
 \code{\link{crop}()},
-\code{\link{resample}()}
+\code{\link{resample}()},
+\code{\link{show,Epoch-method}}
 }
 \concept{Epoch methods}

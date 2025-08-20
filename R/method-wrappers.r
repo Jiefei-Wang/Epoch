@@ -1,6 +1,22 @@
 # These functions do not have any meaningful implementation, just wrapping
 
+#' Wrapper functions for calling TableContainer methods
+#' 
+#' @param x An Epoch object
+#' 
 #' @rdname Epoch-method
+#' @examples
+#' 
+#' # Create an Epoch object
+#' epoch_data <- matrix(rnorm(1000), nrow = 10)
+#' rownames(epoch_data) <- paste0("Electrode_", 1:10)
+#' epoch <- Epoch(epoch_data, startTime = 0, samplingRate = 100)
+#' 
+#' # wrappers
+#' dim(epoch)
+#' dimnames(epoch)
+#' epoch[1]
+#' 
 #' @export
 setMethod("dim", "Epoch", function(x) {
     callNextMethod()

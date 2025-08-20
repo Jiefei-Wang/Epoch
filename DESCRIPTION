@@ -1,16 +1,16 @@
 Package: Epoch
 Title: A Data Package for iEEG Epoch Data
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: 
     person("Jiefei", "Wang", , "szwjf08@gmail.com", role = c("aut", "cre"))
-Description: This package provides tools for working with iEEG epoch data, including downloading, processing, and visualizing the data.
+Description: Provides tools for working with iEEG matrix data, including downloading ('EpochDownloader'), processing ('crop' and 'resample'), and visualizing the data ("plot"). 
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Biarch: true
 Depends: 
-    R (>= 3.5)
+    R (>= 4.1)
 Imports: 
     ggplot2,
     methods,
