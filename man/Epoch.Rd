@@ -18,7 +18,7 @@ Epoch(
 \arguments{
 \item{table}{Matrix containing epoch data (rows=electrodes, columns=time points)}
 
-\item{electrodes}{Optional character vector for electrode names, if not provided, row names of data are used.}
+\item{electrodes}{Optional character vector for electrode names, if not provided, row names of data are used. If row names are also not available, there will be no electrode names.}
 
 \item{times}{Optional numeric vector of time points.}
 

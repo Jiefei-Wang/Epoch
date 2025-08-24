@@ -30,7 +30,7 @@ setClassUnion("data.frameOrNULL", c("data.frame", "NULL"))
 
 #' Constructor for Epoch class
 #' @param table Matrix containing epoch data (rows=electrodes, columns=time points)
-#' @param electrodes Optional character vector for electrode names, if not provided, row names of data are used.
+#' @param electrodes Optional character vector for electrode names, if not provided, row names of data are used. If row names are also not available, there will be no electrode names.
 #' @param times Optional numeric vector of time points.
 #' @param startTime Optional numeric value for start time, if provided, times will be calculated based on this and samplingRate.
 #' @param samplingRate Optional numeric value for sampling rate, if provided, times will be calculated based on this and startTime.
@@ -50,9 +50,18 @@ Epoch <- function(
     electrodes = NULL, times = NULL,
     startTime = NULL, samplingRate = NULL,
     rowData = NULL, colData = NULL, metaData = NULL) {
+    stopifnot(is.matrix(table))
+    stopifnot(is.list(metaData) || is.null(metaData))
     if (!xor(is.null(times), is.null(startTime))) {
         stop("You must specify exactly one of 'times' or 'startTime'")
     }
+
+    if (!is.null(times)) {
+        if (length(times) != ncol(table)) {
+            stop("Length of 'times' must match number of columns in 'table'")
+        }
+    }
+
     if (!is.null(startTime)) {
         # If startTime is provided, we need to calculate times based on samplingRate
         if (is.null(samplingRate)) {
@@ -95,7 +104,12 @@ Epoch <- function(
 
     # set the electrodes of the table
     if (!is.null(electrodes)) {
+      if (!is.character(electrodes) || length(electrodes) != nrow(table)) {
+        stop("`electrodes` must be a character vector of length nrow(table).", call. = FALSE)
+      }
         rownames(table) <- electrodes
+    } else if (!is.null(rownames(table))) {
+        electrodes <- rownames(table)
     }
 
     # reserved metaData name
@@ -154,7 +168,7 @@ setGeneric("coltimes", function(x) standardGeneric("coltimes"))
 setMethod("coltimes", "Epoch", function(x) {
     tms <- .times(x)
     if (!length(tms)) {
-        tms <- seq(1, ncol(x))
+        tms <- seq_len(ncol(x))
     }
     tms
 })

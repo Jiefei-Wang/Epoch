@@ -18,3 +18,4 @@ scripts/
 ^covr$                  # any covr output dir
 ^\.gitignore$
 ^\.gitattributes$
+lib/
