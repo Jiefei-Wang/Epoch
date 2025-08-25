@@ -20,9 +20,11 @@ load_single_file <- function(file_path) {
 get_file_names <- function(x, i) {
     dataNames <- x@dataNames
     files <- x@files
-    files$name[dataNames %in% i]
+    idx <- sapply(i, function(name) which(dataNames == name))
+    files$name[idx]
 }
 
+# get the nonexist file path
 find_nonexist_files <- function(x, i) {
     file_names <- get_file_names(x, i)
     tmp_folder <- x@tmp_folder
@@ -94,14 +96,14 @@ download_to_tmp_folder <- function(x, file_names) {
 #' names(dl)
 #' 
 #' # download the first Epoch object
-#' \dontrun{
+#' \donttest{
 #'  dl[1]
 #'  # equivalent to (index by name)
 #'  dl[names(dl)[1]]
 #' }
 #' 
 #' # download the multiple Epoch objects
-#' \dontrun{
+#' \donttest{
 #'  dl[c(1, 2)]
 #'  # equivalent to (index by name)
 #'  dl[names(dl)[c(1, 2)]]
@@ -144,7 +146,9 @@ EpochDownloader <- function(id = NULL,
         }
       })
     
-      
+    # remove the duplicated file names due to an OSF bug
+    files <- files[!duplicated(files$name), , drop=FALSE]
+
     # Only select .rds files
     rds_files <- files[grep("\\.rds$", files$name, ignore.case = TRUE), , drop = FALSE]
     
@@ -186,27 +190,27 @@ setMethod(
 
 #' @param i Index or name of the files to be accessed.
 #' 
-#' @return `[`: A list of `Epoch` objects
+#' @return `[`: A named list of `Epoch` objects. The names are the dataset names.
 #' @rdname EpochDownloader-method
 #' @export
 setMethod(
     "[", "EpochDownloader",
     function(x, i) {
+        dataNames <- x@dataNames
         if (is.numeric(i)) {
-            if (!isWholeNumber(i)) {
+            if (!all(isWholeNumber(i))) {
                 stop("Index must be a whole number")
             }
-            if(max(i) > length(x@dataNames)) {
-                stop(paste("Index out of bounds. The maximum index is", length(x@dataNames)))
+            if(max(i) > length(dataNames)) {
+                stop(paste("Index out of bounds. The maximum index is", length(dataNames)))
             }
-            i <- x@dataNames[i]
+            i <- dataNames[i]
         } else if (is.character(i)) {
           # pass
         } else {
           stop("Index must be integer positions or character names.", call. = FALSE)
         }
 
-        dataNames <- x@dataNames
         non_exist_names <- i[!i %in% dataNames]
         if (length(non_exist_names) > 0) {
             stop(paste("The following data do not exist:", paste(non_exist_names, collapse = ", ")))
@@ -214,10 +218,12 @@ setMethod(
 
         # file_names <- get_file_names(x, i)
         non_exist_file_names <- find_nonexist_files(x, i)
+        non_exist_file_names <- unique(non_exist_file_names)
         download_to_tmp_folder(x, non_exist_file_names)
 
         file_names <- get_file_names(x, i)
         file_paths <- file.path(x@tmp_folder, file_names)
+        names(file_paths) <- i
         lapply(
             file_paths,
             load_single_file

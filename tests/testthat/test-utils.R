@@ -18,7 +18,7 @@ test_that("isWholeNumber returns TRUE for integers", {
 
 test_that("isWholeNumber returns FALSE for non-integers", {
   expect_false(isWholeNumber(4.5))
-  expect_error(isWholeNumber(c(1, 2, 0.3, 3)), "length\\(x\\) == 1 is not TRUE")
+  expect_equal(isWholeNumber(c(1, 2, 0.3, 3)), c(TRUE, TRUE, FALSE, TRUE))
   expect_error(isWholeNumber(TRUE), "is.numeric\\(x\\) is not TRUE")
 })
 

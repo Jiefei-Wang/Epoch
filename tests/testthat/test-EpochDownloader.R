@@ -78,7 +78,7 @@ test_that("EpochDownloader filters .rds files correctly", {
 
   # Mock functions
   mock_osf_retrieve_node <- function(id) {
-    structure(list(id = id), class = "osf_tbl_node")
+    structure(list(name = letters[seq_along(id)], id = id), class = "osf_tbl_node")
   }
   mock_osf_ls_files <- function(node, n_max) {
     fake_files
@@ -257,7 +257,7 @@ test_that("EpochDownloader uses only the first element of id vector (nickname ma
     osf_retrieve_node = function(id) {
       # should be called with the mapped ID of the FIRST element only
       expect_equal(id, "osf123")
-      structure(list(id = id), class = "osf_node")
+      structure(list(name = letters[seq_along(id)], id = id), class = "osf_node")
     },
     osf_ls_files = function(node, n_max = Inf) fake_files,
     {
@@ -283,7 +283,7 @@ test_that("EpochDownloader uses first element of raw ID vector (no nickname matc
     osf_retrieve_node = function(id) {
       # constructor lowercases; must call with the first raw id only
       expect_equal(id, "osf_first")
-      structure(list(id = id), class = "osf_node")
+      structure(list(name = letters[seq_along(id)], id = id), class = "osf_node")
     },
     osf_ls_files = function(node, n_max = Inf) fake_files,
     {

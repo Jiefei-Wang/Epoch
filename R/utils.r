@@ -10,8 +10,7 @@ tryToNum <- function(x) {
 
 isWholeNumber <- function(x) {
     stopifnot(is.numeric(x))
-    stopifnot(length(x) == 1)
-    return(x %% 1 == 0)
+    sapply(x, function(y) y %% 1 == 0)
 }
 
 

@@ -60,7 +60,7 @@ EpochRepos(verbose = TRUE)
 
 \code{names}: A character vector of file names.
 
-\code{[}: A list of \code{Epoch} objects
+\code{[}: A named list of \code{Epoch} objects. The names are the dataset names.
 
 \code{$}: A single \code{Epoch} object.
 
@@ -97,14 +97,14 @@ dl <- EpochDownloader(id = "fragility")
 names(dl)
 
 # download the first Epoch object
-\dontrun{
+\donttest{
  dl[1]
  # equivalent to (index by name)
  dl[names(dl)[1]]
 }
 
 # download the multiple Epoch objects
-\dontrun{
+\donttest{
  dl[c(1, 2)]
  # equivalent to (index by name)
  dl[names(dl)[c(1, 2)]]
