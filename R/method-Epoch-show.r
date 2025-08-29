@@ -3,6 +3,7 @@
 #' 
 #' @family Epoch methods
 #' @param object Epoch object
+#' @return returns an invisible NULL
 #' @export
 setMethod("show", "Epoch", 
     function(object) {
@@ -25,5 +26,6 @@ setMethod("show", "Epoch",
         .printMeta(md, "metaData")
 
         cat("Use tblData, rowData, colData, metaData to get the data\n")
+        invisible(NULL)
     }
 )

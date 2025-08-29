@@ -23,7 +23,7 @@ library(Epoch)
 
 The Epoch package provides tools for downloading, manipulating, and analyzing intracranial EEG (iEEG) epoch data. This vignette will guide you through the main features of the package, from downloading data using `EpochDownloader` to manipulating and visualizing `Epoch` objects.
 
-# Creating an EpochDownloader
+# Using the EpochDownloader
 
 The `EpochDownloader` class is your gateway to accessing iEEG data. You can create a downloader using either a project name or a direct OSF project ID. We provide `fragility` and `kData` projects from UTMB as predefined projects for seizure onset prediction analysis. You can list all available projects via `EpochRepos()`.
 ```{r list_projects}
@@ -38,13 +38,13 @@ downloader
 ```
 
 
-# Exploring Available Data Files
+## Exploring Available Data Files
 The downloader works like a list object in R. Once you have a downloader, you can explore what data files are available using `names()`
 ```{r explore_data}
 names(downloader)
 ```
 
-# Loading Data into Epoch Objects
+## Loading Data into Epoch Objects
 
 Now you can load specific datasets into `Epoch` objects using `$`, `[[]]`, or `[]` operators. The downloader will automatically handle the download and conversion of raw data files into `Epoch` objects. `$` and `[[]]` will return a single `Epoch` object, while `[]` will return a list of `Epoch` objects.
 
@@ -66,6 +66,14 @@ epoch_list <- downloader[selected_data]
 
 epoch_list
 ```
+
+
+## Data Dictionary
+To understand the definition of each variable in the metadata, you can call `wiki()` on the EpochDownloader object. This will bring you to the OSF wiki page associated with the project
+```{r, eval=FALSE}
+wiki(downloader)
+```
+
 
 # Working with Epoch Objects
 

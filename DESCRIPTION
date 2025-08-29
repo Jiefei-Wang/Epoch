@@ -1,9 +1,10 @@
 Package: Epoch
-Title: IEEG Epoch Data Tools
-Version: 1.0.2
+Title: IEEG (Intracranial Electroencephalography) Epoch Data Tools
+Version: 1.0.3
 Authors@R: 
     person("Jiefei", "Wang", , "szwjf08@gmail.com", role = c("aut", "cre"))
-Description: Provides tools for working with iEEG matrix data, including downloading curated iEEG data from OSF <https://osf.io/> ('EpochDownloader()'), making new objects ('Epoch()'), processing ('crop()' and 'resample()'), and visualizing the data ("plot()"). 
+Description: Provides tools for working with iEEG matrix data, including downloading curated iEEG data from OSF (The Open Science Framework
+<https://osf.io/>) (EpochDownloader()), making new objects (Epoch()), processing (crop() and resample()), and visualizing the data (plot()). 
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
