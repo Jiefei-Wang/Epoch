@@ -3,8 +3,11 @@
 
 # Epoch: Epileptogenic Zone Localization Based on neural Fragility EEG marker
 
-[![](https://img.shields.io/badge/devel%20version-1.0.0-blue.svg)](https://github.com/Jiefei-Wang/Epoch)
-[![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![](https://www.r-pkg.org/badges/version/Epoch?color=green)](https://cran.r-project.org/package=Epoch)
+[![](https://img.shields.io/badge/devel%20version-1.0.3-blue.svg)](https://github.com/Jiefei-Wang/Epoch)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/Epoch?color=blue)](https://cran.r-project.org/package=Epoch)
+[![](http://cranlogs.r-pkg.org/badges/last-month/Epoch?color=green)](https://cran.r-project.org/package=Epoch)
+[![](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![](https://img.shields.io/github/languages/code-size/Jiefei-Wang/Epoch.svg)](https://github.com/Jiefei-Wang/Epoch)
 [![](https://img.shields.io/github/last-commit/Jiefei-Wang/Epoch.svg)](https://github.com/Jiefei-Wang/Epoch/commits/main)
 [![R-CMD-check](https://github.com/Jiefei-Wang/Epoch/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Jiefei-Wang/Epoch/actions/workflows/R-CMD-check.yaml)
