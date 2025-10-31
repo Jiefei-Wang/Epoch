@@ -7,7 +7,7 @@ Description: Provides tools for working with iEEG matrix data, including downloa
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Biarch: true
 Depends: 
     R (>= 4.1)

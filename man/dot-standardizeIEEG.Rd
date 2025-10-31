@@ -4,10 +4,14 @@
 \alias{.standardizeIEEG}
 \title{Standardize iEEG row data for plotting}
 \usage{
-.standardizeIEEG(data)
+.standardizeIEEG(data, standardize = TRUE, gap = 2)
 }
 \arguments{
 \item{data}{Matrix or data frame of iEEG data}
+
+\item{standardize}{Logical or numeric vector. If logical, indicates whether to standardize each row. If numeric, indicates the scaling factor for each row.}
+
+\item{gap}{Numeric. The gap to separate different electrodes in the plot.}
 }
 \value{
 Standardized data matrix

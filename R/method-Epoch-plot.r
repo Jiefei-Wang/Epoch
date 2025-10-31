@@ -7,6 +7,7 @@
 #' @param timeResolution Maximum number of time points to keep for each electrode (default: 2048)
 #' @param maxLabels Maximum number of electrode labels to display on the y-axis (default: 50)
 #' @param x.lab.size Size of the x-axis label text (default: 2)
+#' @param standardize If the parameter is a logical value, it indicates whether to standardize the iEEG data across time for each electrode. If it is a logical vector with length equal to the number of electrodes, it indicates whether to standardize each electrode individually. If it is a numeric vector with length equal to the number of electrodes, it indicates the standard deviation to use for standardization for each electrode. (default: TRUE).
 #' @param ... Additional arguments (not currently used)
 #' @return `plot`: A ggplot object showing iEEG electrode traces
 #'
@@ -25,7 +26,7 @@
 setMethod("plot", signature(x = "Epoch", y = "missing"), 
     function(x, y, gap = 2, 
     groupIndex = NULL, timeResolution = 2048, 
-    maxLabels = 50, x.lab.size = 2,  ...) {
+    maxLabels = 50, x.lab.size = 2, standardize = TRUE, ...) {
     elecNames <- rownames(x)
     data <- tblData(x)
     elecNum <- nrow(data)
@@ -61,16 +62,20 @@ setMethod("plot", signature(x = "Epoch", y = "missing"),
 
     # reorder the electrodes
     plotData <- plotData[c(group1, group2), , drop = FALSE]
-    elecNames <- c(elecNames[group1], elecNames[group2])
+    newElecNames <- c(elecNames[group1], elecNames[group2])
 
     # Standardize the data
-    plotData <- t(.standardizeIEEG(plotData))
+    if (length(standardize) == elecNum){
+        names(standardize) <- elecNames
+        standardize <- standardize[newElecNames]
+    }
+    plotData <- t(.standardizeIEEG(plotData, standardize, gap))
     plotData <- as.data.frame(plotData)
     plotData$timeTicks <- timeTicks
 
     # Add gap between electrodes for visual separation
     breakplot <- (seq_len(elecNum) - 1) * gap
-    elecNamesReversed <- rev(elecNames)
+    elecNamesReversed <- rev(newElecNames)
     for (i in seq_along(elecNamesReversed)) {
         elec <- elecNamesReversed[i]
         plotData[[elec]] <- plotData[[elec]] + (i-1) * gap

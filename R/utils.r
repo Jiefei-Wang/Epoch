@@ -57,21 +57,46 @@ isWholeNumber <- function(x) {
 #' Standardize iEEG row data for plotting
 #'
 #' @param data Matrix or data frame of iEEG data
+#' @param standardize Logical or numeric vector. If logical, indicates whether to standardize each row. If numeric, indicates the scaling factor for each row.
+#' @param gap Numeric. The gap to separate different electrodes in the plot.
 #' @return Standardized data matrix
-.standardizeIEEG <- function(data) {
+.standardizeIEEG <- function(data, standardize = TRUE, gap = 2) {
     # Simple standardization - can be enhanced based on needs
     if (is.data.frame(data)) {
         data <- as.matrix(data)
     }
-    # Z-score standardization per electrode
-    # with a small offset to variance
-    mat <- apply(
-        data, 1, 
-        function(x){
-            mean <- mean(x, na.rm = TRUE)
-            sd <- sd(x, na.rm = TRUE) + 1
-            (x - mean) / sd
+    # recycle to match length
+    if (is.logical(standardize)) {
+        if (length(standardize) == 1) {
+            standardize <- rep(standardize, nrow(data))
+        } else if (length(standardize) != nrow(data)) {
+            stop("Length of logical standardize vector must be 1 or equal to the number of electrodes.")
         }
-    )
-    t(mat)
+    } else if (is.numeric(standardize)) {
+        if (length(standardize) != nrow(data)) {
+            stop("Length of numeric standardize vector must be equal to the number of electrodes.")
+        }
+    } else {
+        stop("standardize parameter must be either logical or numeric vector.")
+    }
+
+    mat <- data
+    global_max <- max(data, na.rm = TRUE)
+    global_min <- min(data, na.rm = TRUE)
+    ratio <- gap / (global_max - global_min + 1) 
+    mat <- (mat - global_min) * ratio - ((global_max - global_min) / 2)
+
+    for (i in seq_len(nrow(data))) {
+        mean_val <- mean(data[i, ], na.rm = TRUE)
+        sd_val <- sd(data[i, ], na.rm = TRUE)
+        
+        if (is.logical(standardize)) {
+            if (standardize[i]) {
+                mat[i, ] <- (data[i, ] - mean_val) / (sd_val + 1)
+            }
+        } else if (is.numeric(standardize)) {
+            mat[i, ] <- (data[i, ] - mean_val) * (standardize[i] / (sd_val + 1) )
+        }
+    }
+    mat
 }
