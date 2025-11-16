@@ -11,6 +11,7 @@
   groupIndex = NULL,
   timeResolution = 2048,
   maxLabels = 50,
+  linewidth = 0.2,
   x.lab.size = 10,
   y.lab.size = 10,
   standardize = TRUE,
@@ -29,6 +30,8 @@
 \item{timeResolution}{Maximum number of time points to keep for each electrode (default: 2048)}
 
 \item{maxLabels}{Maximum number of electrode labels to display on the y-axis (default: 50)}
+
+\item{linewidth}{Line width for the electrode traces (default: 0.2)}
 
 \item{x.lab.size}{Size of the x-axis label text (default: 10)}
 
