@@ -11,7 +11,8 @@
   groupIndex = NULL,
   timeResolution = 2048,
   maxLabels = 50,
-  x.lab.size = 2,
+  x.lab.size = 10,
+  y.lab.size = 10,
   standardize = TRUE,
   ...
 )
@@ -29,7 +30,9 @@
 
 \item{maxLabels}{Maximum number of electrode labels to display on the y-axis (default: 50)}
 
-\item{x.lab.size}{Size of the x-axis label text (default: 2)}
+\item{x.lab.size}{Size of the x-axis label text (default: 10)}
+
+\item{y.lab.size}{Size of the y-axis label text (default: 10)}
 
 \item{standardize}{If the parameter is a logical value, it indicates whether to standardize the iEEG data across time for each electrode. If it is a logical vector with length equal to the number of electrodes, it indicates whether to standardize each electrode individually. If it is a numeric vector with length equal to the number of electrodes, it indicates the standard deviation to use for standardization for each electrode. (default: TRUE).}
 

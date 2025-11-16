@@ -6,7 +6,7 @@
 #' @importFrom jsonlite fromJSON
 #' @importFrom stats sd
 #' @importFrom rlang .data
-#' @importFrom ggplot2 ggplot geom_line aes labs scale_y_continuous theme
+#' @importFrom ggplot2 ggplot geom_line aes labs scale_y_continuous theme element_text
 #' @importFrom ggtext element_markdown
 #' @importFrom gsignal resample
 #' @importFrom stats reshape

@@ -6,7 +6,8 @@
 #' @param groupIndex Integer or string. A group of electrodes to show together in a different color. If NULL(default), all electrodes are shown in the same color. 
 #' @param timeResolution Maximum number of time points to keep for each electrode (default: 2048)
 #' @param maxLabels Maximum number of electrode labels to display on the y-axis (default: 50)
-#' @param x.lab.size Size of the x-axis label text (default: 2)
+#' @param x.lab.size Size of the x-axis label text (default: 10)
+#' @param y.lab.size Size of the y-axis label text (default: 10)
 #' @param standardize If the parameter is a logical value, it indicates whether to standardize the iEEG data across time for each electrode. If it is a logical vector with length equal to the number of electrodes, it indicates whether to standardize each electrode individually. If it is a numeric vector with length equal to the number of electrodes, it indicates the standard deviation to use for standardization for each electrode. (default: TRUE).
 #' @param ... Additional arguments (not currently used)
 #' @return `plot`: A ggplot object showing iEEG electrode traces
@@ -26,7 +27,7 @@
 setMethod("plot", signature(x = "Epoch", y = "missing"), 
     function(x, y, gap = 2, 
     groupIndex = NULL, timeResolution = 2048, 
-    maxLabels = 50, x.lab.size = 2, standardize = TRUE, ...) {
+    maxLabels = 50, x.lab.size = 10, y.lab.size = 10, standardize = TRUE, ...) {
     elecNames <- rownames(x)
     data <- tblData(x)
     elecNum <- nrow(data)
@@ -107,10 +108,12 @@ setMethod("plot", signature(x = "Epoch", y = "missing"),
         aes(x = .data$timeTicks, y = .data$Signal, group = .data$Electrode)
     ) +
     geom_line(linewidth = 0.3, alpha = 0.9) + 
-    labs(x = xlabel, y = "Electrode", size = x.lab.size) +
+    labs(x = xlabel, y = "Electrode") +
     scale_y_continuous(labels = ylabels, breaks = breakplot) +
     theme(
-        axis.text.y = element_markdown(colour = elecColor)
+        axis.text.y = element_markdown(colour = elecColor),
+        axis.title.x = element_text(size = x.lab.size),
+        axis.title.y = element_text(size = y.lab.size)
     ) -> p
 
     p 
