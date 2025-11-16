@@ -1,8 +1,10 @@
-==============
-Version 1.0.6:
+Version 1.0.6
+==========
 - Fix and add x.lab.size and y.lab.size parameters in plot.Epoch method
 - add linewidth parameter in plot.Epoch method
 
 
-==============
-Version 1.0.5: CRAN Initial Submission
+Version 1.0.5
+==========
+- CRAN Initial Submission
+
