@@ -86,24 +86,23 @@ download_to_tmp_folder <- function(x, file_names) {
 #' @return `EpochDownloader`: An `EpochDownloader` object.
 #' @rdname EpochDownloader-method
 #' @examples 
-#' # list all available projects
-#' EpochRepos()
-#' 
-#' # downloader for the fragility data
-#' dl <- EpochDownloader(id = "fragility")
-#' 
-#' # list all Epoch objects in the downloader
-#' names(dl)
-#' 
-#' # download the first Epoch object
 #' \donttest{
+#'  # list all available projects
+#'  EpochRepos()
+#' 
+#'  # downloader for the fragility data
+#'  dl <- EpochDownloader(id = "fragility")
+#' 
+#'  # list all Epoch objects in the downloader
+#'  names(dl)
+#' 
+#'  # download the first Epoch object
 #'  dl[1]
 #'  # equivalent to (index by name)
 #'  dl[names(dl)[1]]
-#' }
 #' 
-#' # download the multiple Epoch objects
-#' \donttest{
+#'  # download the multiple Epoch objects
+#' 
 #'  dl[c(1, 2)]
 #'  # equivalent to (index by name)
 #'  dl[names(dl)[c(1, 2)]]
