@@ -2,6 +2,63 @@
 ##############################
 ## Utils
 ##############################
+
+.osf_ls_files_api <- function(id, page_size = 100) {
+    url <- sprintf(
+        "https://api.osf.io/v2/nodes/%s/files/osfstorage/?page%%5Bsize%%5D=%s",
+        id,
+        page_size
+    )
+
+    out <- list()
+
+    while (!is.null(url) && length(url) == 1L && !is.na(url) && nzchar(url)) {
+        jsonText <- paste(readLines(url, warn = FALSE), collapse = "\n")
+        json <- jsonlite::fromJSON(jsonText, simplifyVector = FALSE)
+
+        out <- c(out, json$data)
+        url <- json[["links"]][["next"]]
+    }
+
+    if (length(out) == 0L) {
+        files <- data.frame(
+            name = character(),
+            id = character(),
+            stringsAsFactors = FALSE
+        )
+        files$meta <- I(list())
+    } else {
+        file_names <- vapply(out, function(x) x$attributes$name, character(1))
+        file_ids <- vapply(out, function(x) x$id, character(1))
+
+        if (anyDuplicated(file_names)) {
+            duplicated_names <- unique(file_names[duplicated(file_names)])
+
+            stop(
+                paste0(
+                    "OSF API pagination returned duplicated file names: ",
+                    paste(duplicated_names, collapse = ", "),
+                    ". This may indicate an OSF pagination issue. ",
+                    "Try a larger page_size or inspect the OSF API response."
+                ),
+                call. = FALSE
+            )
+        }
+
+        files <- data.frame(
+            name = file_names,
+            id = file_ids,
+            stringsAsFactors = FALSE
+        )
+        files$meta <- I(out)
+    }
+
+    files <- files[, c("name", "id", "meta"), drop = FALSE]
+    class(files) <- c("osf_tbl_file", "osf_tbl", "tbl_df", "tbl", "data.frame")
+
+    files
+}
+
 load_single_file <- function(file_path) {
     tryCatch(
         {
@@ -131,23 +188,19 @@ EpochDownloader <- function(id = NULL,
         }
     }
     
-    files <- tryCatch({
-        osf_retrieve_node(id) |>
-          osf_ls_files(n_max = Inf)
-      },
-      error = function(e) {
-        if (grepl("404", e$message)) {
-          stop("The ID does not exist or you do not have permission to access it.", call. = FALSE)
-        } else if (grepl("Detected invalid OSF identifiers", e$message)) {
-          stop("Invalid OSF ID format.", call. = FALSE)
-        } else {
-          stop(e)  # re-throw other errors
-        }
-      })
+files <- tryCatch({
+    .osf_ls_files_api(id)
+  },
+  error = function(e) {
+    if (grepl("404", e$message)) {
+      stop("The ID does not exist or you do not have permission to access it.", call. = FALSE)
+    } else if (grepl("Detected invalid OSF identifiers", e$message)) {
+      stop("Invalid OSF ID format.", call. = FALSE)
+    } else {
+      stop(e)  # re-throw other errors
+    }
+  })
     
-    # remove the duplicated file names due to an OSF bug
-    files <- files[!duplicated(files$name), , drop=FALSE]
-
     # Only select .rds files
     rds_files <- files[grep("\\.rds$", files$name, ignore.case = TRUE), , drop = FALSE]
     
